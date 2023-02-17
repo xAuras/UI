@@ -1,4 +1,4 @@
-local Particle = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/xAuras/UI/main/particle.lua"))()
+local Particle = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/xAuras/utilities/main/particle.lua"))()
 local RunService = game:GetService("RunService")
 
 local ParticleEmitter = {}
