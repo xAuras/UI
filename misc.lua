@@ -157,9 +157,11 @@ function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
             MenuSection:Toggle({Name = "Open On Load",Flag = "UI/OOL",Value = true})
             MenuSection:Toggle({Name = "Blur Gameplay",Flag = "UI/Blur",Value = false,
             Callback = function(Bool) Window.Blur = Bool end})
-      --      MenuSection:Toggle({Name = "Watermark",Flag = "UI/Watermark",Value = true,
-        --    Callback = function(Bool) Window.Watermark.Enabled = Bool end})
+        --[[
+            MenuSection:Toggle({Name = "Watermark",Flag = "UI/Watermark",Value = true,
+            Callback = function(Bool) Window.Watermark.Enabled = Bool end})
             MenuSection:Toggle({Name = "Custom Mouse",Flag = "Mouse/Enabled",Value = CustomMouse})
+           ]]
         end
         SettingsTab:AddConfigSection("Parvus","Left")
 
@@ -218,12 +220,16 @@ function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
             BackgroundSection:Slider({Name = "Tile Offset",Flag = "Background/Offset",HighType = true,Min = 74,Max = 296,Value = 74,
             Callback = function(Number) Window.Background.TileSize = UDim2.fromOffset(Number,Number) end})
         
-        BackgroundSection:Button({Name = "Rejoin",Side = "Right",
+
+        end
+        
+        local TeleportSection = SettingsTab:Section({Name = "Teleport",Side = "Right"}) do
+        TeleportSection:Button({Name = "Rejoin",Side = "Right",
         Callback = Parvus.Utilities.Misc.ReJoin})
 
-        BackgroundSection:Button({Name = "Server Hop",Side = "Right",
+        TeleportSection:Button({Name = "Server Hop",Side = "Right",
         Callback = Parvus.Utilities.Misc.ServerHop})
-        end
+        end    
         --[[
         local CrosshairSection = SettingsTab:Section({Name = "Custom Crosshair",Side = "Right"}) do
             CrosshairSection:Toggle({Name = "Enabled",Flag = "Mouse/Crosshair/Enabled",Value = false})
