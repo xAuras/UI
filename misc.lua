@@ -78,7 +78,7 @@ end
 
 function Misc:ReJoin()
     if #PlayerService:GetPlayers() <= 1 then
-        LocalPlayer:Kick("\nParvus Hub\nRejoining...")
+        LocalPlayer:Kick("\nArcane Odyssey\nRejoining...")
         task.wait(0.5) TeleportService:Teleport(game.PlaceId)
     else
         TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId)
@@ -100,13 +100,14 @@ function Misc:ServerHop()
         )
     else
         Parvus.Utilities.UI:Notification({
-            Title = "Parvus Hub",
+            Title = "Arcane Odyssey",
             Description = "Couldn't find a server",
             Duration = 5
         })
     end
 end
 
+--[[
 function Misc:JoinDiscord()
     Request({
         ["Url"] = "http://localhost:6463/rpc?v=1",
@@ -124,18 +125,24 @@ function Misc:JoinDiscord()
         })
     })
 end
+]]
 
+
+--[[
 function Misc:SetupWatermark(Window)
     local GetFPS = Misc:SetupFPS()
     RunService.Heartbeat:Connect(function()
+        
         if Window.Watermark.Enabled then
             Window.Watermark.Title = string.format(
-                "Parvus Hub    %s    %i FPS    %i MS",
+                "Arcane Odyssey    %s    %i FPS    %i MS",
                 os.date("%X"),GetFPS(),math.round(Ping:GetValue())
             )
         end
+        
     end)
 end
+]]
 
 function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
     local SettingsTab = Window:Tab({Name = "Settings"}) do
@@ -150,8 +157,8 @@ function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
             MenuSection:Toggle({Name = "Open On Load",Flag = "UI/OOL",Value = true})
             MenuSection:Toggle({Name = "Blur Gameplay",Flag = "UI/Blur",Value = false,
             Callback = function(Bool) Window.Blur = Bool end})
-            MenuSection:Toggle({Name = "Watermark",Flag = "UI/Watermark",Value = true,
-            Callback = function(Bool) Window.Watermark.Enabled = Bool end})
+      --      MenuSection:Toggle({Name = "Watermark",Flag = "UI/Watermark",Value = true,
+        --    Callback = function(Bool) Window.Watermark.Enabled = Bool end})
             MenuSection:Toggle({Name = "Custom Mouse",Flag = "Mouse/Enabled",Value = CustomMouse})
         end
         SettingsTab:AddConfigSection("Parvus","Left")
@@ -161,7 +168,7 @@ function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
 
         SettingsTab:Button({Name = "Server Hop",Side = "Left",
         Callback = Parvus.Utilities.Misc.ServerHop})
-
+--[[
         SettingsTab:Button({Name = "Join Discord Server",Side = "Left",
         Callback = Parvus.Utilities.Misc.JoinDiscord})
         :ToolTip("Join for support, updates and more!")
@@ -169,7 +176,7 @@ function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
         SettingsTab:Button({Name = "Copy Discord Invite",Side = "Left",
         Callback = function() setclipboard("https://discord.com/invite/sYqDpbPYb7") end})
         :ToolTip("Join for support, updates and more!")
-
+]]
         local BackgroundSection = SettingsTab:Section({Name = "Background",Side = "Right"}) do
             BackgroundSection:Colorpicker({Name = "Color",Flag = "Background/Color",Value = {0.12000000476837158,0.10204081237316132,0.9607843160629272,0.5,false},
             Callback = function(HSVAR,Color) Window.Background.ImageColor3 = Color Window.Background.ImageTransparency = HSVAR[4] end})
@@ -216,12 +223,14 @@ function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
             BackgroundSection:Slider({Name = "Tile Offset",Flag = "Background/Offset",HighType = true,Min = 74,Max = 296,Value = 74,
             Callback = function(Number) Window.Background.TileSize = UDim2.fromOffset(Number,Number) end})
         end
+        --[[
         local CrosshairSection = SettingsTab:Section({Name = "Custom Crosshair",Side = "Right"}) do
             CrosshairSection:Toggle({Name = "Enabled",Flag = "Mouse/Crosshair/Enabled",Value = false})
             :Colorpicker({Flag = "Mouse/Crosshair/Color",Value = {1,1,1,0,false}})
             CrosshairSection:Slider({Name = "Size",Flag = "Mouse/Crosshair/Size",HighType = true,Min = 0,Max = 20,Value = 4})
             CrosshairSection:Slider({Name = "Gap",Flag = "Mouse/Crosshair/Gap",HighType = true,Min = 0,Max = 10,Value = 2})
         end
+    
         local CreditsSection = SettingsTab:Section({Name = "Credits",Side = "Right"}) do
             CreditsSection:Label({Text = "This script was made by AlexR32#0157"})
             CreditsSection:Divider()
@@ -232,6 +241,7 @@ function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
             CreditsSection:Label({Text = "Thanks to el3tric for Bracket V2"})
             CreditsSection:Label({Text = "❤️ ❤️ ❤️ ❤️"})
         end
+        ]]
     end
 end
 
