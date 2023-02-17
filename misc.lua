@@ -163,11 +163,6 @@ function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
         end
         SettingsTab:AddConfigSection("Parvus","Left")
 
-        SettingsTab:Button({Name = "Rejoin",Side = "Right",
-        Callback = Parvus.Utilities.Misc.ReJoin})
-
-        SettingsTab:Button({Name = "Server Hop",Side = "Right",
-        Callback = Parvus.Utilities.Misc.ServerHop})
 --[[
         SettingsTab:Button({Name = "Join Discord Server",Side = "Left",
         Callback = Parvus.Utilities.Misc.JoinDiscord})
@@ -222,6 +217,12 @@ function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
             }})
             BackgroundSection:Slider({Name = "Tile Offset",Flag = "Background/Offset",HighType = true,Min = 74,Max = 296,Value = 74,
             Callback = function(Number) Window.Background.TileSize = UDim2.fromOffset(Number,Number) end})
+        
+        BackgroundSection:Button({Name = "Rejoin",Side = "Right",
+        Callback = Parvus.Utilities.Misc.ReJoin})
+
+        BackgroundSection:Button({Name = "Server Hop",Side = "Right",
+        Callback = Parvus.Utilities.Misc.ServerHop})
         end
         --[[
         local CrosshairSection = SettingsTab:Section({Name = "Custom Crosshair",Side = "Right"}) do
