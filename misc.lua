@@ -163,10 +163,10 @@ function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
         end
         SettingsTab:AddConfigSection("Parvus","Left")
 
-        SettingsTab:Button({Name = "Rejoin",Side = "Left",
+        SettingsTab:Button({Name = "Rejoin",Side = "Right",
         Callback = Parvus.Utilities.Misc.ReJoin})
 
-        SettingsTab:Button({Name = "Server Hop",Side = "Left",
+        SettingsTab:Button({Name = "Server Hop",Side = "Right",
         Callback = Parvus.Utilities.Misc.ServerHop})
 --[[
         SettingsTab:Button({Name = "Join Discord Server",Side = "Left",
