@@ -1876,7 +1876,6 @@ function Bracket:Notification(Notification)
     Notification.Description = GetType(Notification.Description,"Description","string")
 
     local NotificationAsset = GetAsset("Notification/ND")
-    print(NotificationAsset.ClassName)
     NotificationAsset.Parent = Bracket.ScreenAsset.NDHandle
     NotificationAsset.Title.Text = Notification.Title
     NotificationAsset.Description.Text = Notification.Description
