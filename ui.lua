@@ -1900,6 +1900,8 @@ function Bracket:Notification(Notification)
                 Notification.Callback()
             end
             NotificationAsset:Destroy()
+            else
+                NotificationAsset.Title.Close.Text = Time
             end
         end)
     else
