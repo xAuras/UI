@@ -1901,7 +1901,7 @@ function Bracket:Notification(Notification)
             end
             NotificationAsset:Destroy()
             else
-                NotificationAsset.Title.Close.Text = Time
+                NotificationAsset.Title.Close.Text = Notification.Duration
             end
         end)
     else
