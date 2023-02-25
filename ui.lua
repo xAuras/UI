@@ -1889,6 +1889,7 @@ function Bracket:Notification(Notification)
 
     if Notification.Duration then
         task.spawn(function()
+            if tonumber(Notification.Duration) < 10000 then
             for Time = Notification.Duration,1,-1 do
                 NotificationAsset.Title.Close.Text = Time
                 task.wait(1)
@@ -1899,11 +1900,14 @@ function Bracket:Notification(Notification)
                 Notification.Callback()
             end
             NotificationAsset:Destroy()
+            end
         end)
     else
+        --[[
         NotificationAsset.Title.Close.MouseButton1Click:Connect(function()
             NotificationAsset:Destroy()
         end)
+        ]]
     end
 end
 
