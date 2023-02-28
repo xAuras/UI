@@ -392,6 +392,10 @@ LastRefresh = tick()
     for Target,ESP in pairs(DrawingLibrary.ESP) do
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
         
+        if ESP.Mode == "Mob" then
+            print(ESP.Target.Character,ESP.Target.RootPart)
+        end    
+        
         if ESP.Mode == "NPC" then
         ESP.Target.RootPart = ESP.Target.Character.FakeHead1
         end    
