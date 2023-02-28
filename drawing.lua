@@ -382,8 +382,13 @@ local function Format(format, ...)
 	return string.format(format, ...);
 end
 
+local RefreshRate = 25
+local LastRefresh = 0
 
 RunService.Heartbeat:Connect(function()
+if (tick() - LastRefresh) > (RefreshRate / 1000) then    
+pcall(function()
+LastRefresh = tick() 
     for Target,ESP in pairs(DrawingLibrary.ESP) do
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
         
@@ -602,6 +607,8 @@ RunService.Heartbeat:Connect(function()
             ESP.Drawing.Distance.Visible = true
         end
         
+    end
+    end)
     end
 end)
 
