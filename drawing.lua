@@ -192,7 +192,7 @@ elseif game.GameId == 1168263273 then
     end
     function GetTeam(Target,Character,Mode)
         local Team,LPTeam = GetPlayerTeam(Target),GetPlayerTeam(LocalPlayer)
-        return true --LPTeam ~= Team or Team == "FFA",Tortoiseshell.Teams.Colors[Team]
+        return LPTeam ~= Team or Team == "FFA",Tortoiseshell.Teams.Colors[Team]
     end
 elseif game.GameId == 1586272220 then
     local function GetPlayerTank(Player)
@@ -387,7 +387,7 @@ RunService.Heartbeat:Connect(function()
 
             ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag,"/DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag,"/Distance"),ESP.Target.Distance)
             ESP.Target.Health,ESP.Target.MaxHealth,ESP.Target.IsAlive = GetHealth(Target,ESP.Target.Character,ESP.Mode)
-            ESP.Target.InEnemyTeam,ESP.Target.TeamColor = GetTeam(Target,ESP.Target.Character,ESP.Mode)
+            ESP.Target.InEnemyTeam,ESP.Target.TeamColor = true--GetTeam(Target,ESP.Target.Character,ESP.Mode)
             ESP.Target.Color = GetFlag(ESP.Flags,ESP.Flag,"/TeamColor") and ESP.Target.TeamColor
             or (ESP.Target.InEnemyTeam and GetFlag(ESP.Flags,ESP.Flag,"/Enemy")[6]
             or GetFlag(ESP.Flags,ESP.Flag,"/Ally")[6])
