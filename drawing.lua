@@ -114,8 +114,14 @@ function GetCharacter(Target,Mode)
     if Mode == "Player" then
         local Character = Target.Character if not Character then return end
         return Character,FindFirstChild(Character,"HumanoidRootPart")
-    else return Target,FindFirstChild(Target,"HumanoidRootPart") end
+    
+    elseif Mode ~= "NPC" and Mode ~= "Player" then 
+    return Target,FindFirstChild(Target,"HumanoidRootPart")
+    elseif Mode == "NPC" then
+    return Target,FindFirstChild(Target,"FakeHead1") 
+    end
 end
+
 function GetHealth(Target,Character,Mode)
     local Humanoid = FindFirstChildOfClass(Character,"Humanoid")
     if not Humanoid then return end
@@ -377,6 +383,11 @@ end
 RunService.Heartbeat:Connect(function()
     for Target,ESP in pairs(DrawingLibrary.ESP) do
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
+        
+        if ESP.Mode ~= "Player" then
+            print(ESP.Target.Character)
+        end
+            
         if ESP.Target.Character and ESP.Target.RootPart then
             ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
             ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
@@ -471,9 +482,7 @@ RunService.Heartbeat:Connect(function()
                     end
                      ]]
                 
-                if ESP.Mode ~= "Player" then
-                    print(ESP.Target.Character)
-                end
+   
                 
                     if ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Head") then--and ESP.Mode == "Player" or ESP.Mode ~= "Player" and ESP.Drawing.Name.Visible and ESP.Target.Character.Parent ~= nil and ESP.Target.Character.Parent:FindFirstChild("Head") then
                         
