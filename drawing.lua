@@ -384,7 +384,7 @@ RunService.Heartbeat:Connect(function()
             
             ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag," DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag," Distance"),ESP.Target.Distance)
             ESP.Target.Health,ESP.Target.MaxHealth,ESP.Target.IsAlive = GetHealth(Target,ESP.Target.Character,ESP.Mode)
-            ESP.Target.InEnemyTeam,ESP.Target.TeamColor = GetTeam(Target,ESP.Target.Character,ESP.Mode)
+            ESP.Target.InEnemyTeam = true --ESP.Target.InEnemyTeam,ESP.Target.TeamColor = GetTeam(Target,ESP.Target.Character,ESP.Mode)
             ESP.Target.Color = GetFlag(ESP.Flags,ESP.Flag," Color")[6] --GetFlag(ESP.Flags,ESP.Flag,"/TeamColor") and ESP.Target.TeamColor
             --or (ESP.Target.InEnemyTeam and GetFlag(ESP.Flags,ESP.Flag,"/Enemy")[6]
             --or GetFlag(ESP.Flags,ESP.Flag,"/Ally")[6])
@@ -475,16 +475,16 @@ RunService.Heartbeat:Connect(function()
                         
                         local Character = ESP.Target.Character:FindFirstChild("Head")
                         
-                        ESP.Drawing.Name.Text = ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
+                        ESP.Drawing.Name.Text = ESP.Mode == "Player" and Target.Name --or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
                         
                 local Str = '';
 				Str = Str .. Format('[%d] ', tonumber(ESP.Target.Distance));
-				if Character.Parent:FindFirstChildOfClass("Humanoid") then
+				if Character.Parent:FindFirstChildOfClass("Humanoid") and ESP.Mode ~= "NPC" then
 			    Str = Str .. Format('[%d/%d] [%s%%]', Character.Parent:FindFirstChildOfClass("Humanoid").Health, Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth, math.floor(Character.Parent:FindFirstChildOfClass("Humanoid").Health / Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth * 100));
 				end
 		          ESP.Drawing.Distance.Text = Str
                         --ESP.Drawing.Name.Text = string.format("%s\n%i studs",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
-                        ESP.Drawing.Name.Color = ESP.Target.Color  -- color3ToRGB(Window.Flags["Player ESP Color"][6]) --Color3.fromRGB(255, 81, 81)
+                        ESP.Drawing.Name.Color = ESP.Target.Color --color3ToRGB(Window.Flags["Player ESP Color"][6]) --Color3.fromRGB(255, 81, 81)
                         ESP.Drawing.Name.Position = WTS(Character.Position + Vector3.new(0,GetFlag(ESP.Flags,ESP.Flag," YOffset"),0)) + nameVector2
                         ESP.Drawing.Name.Size = 16
                         ESP.Drawing.Name.Outline = true
