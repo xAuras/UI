@@ -123,6 +123,9 @@ function GetCharacter(Target,Mode)
 end
 
 function GetHealth(Target,Character,Mode)
+    if Mode == "NPC" then
+        return 100,100,100
+    end    
     local Humanoid = FindFirstChildOfClass(Character,"Humanoid")
     if not Humanoid then return end
     return Humanoid.Health,
@@ -389,8 +392,14 @@ RunService.Heartbeat:Connect(function()
         end
             
         if ESP.Target.Character and ESP.Target.RootPart then
+            if ESP.Mode ~= "NPC" then
             ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
             ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
+            elseif ESP.Mode == "NPC" then
+            ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.FakeHead1.Position)
+            ESP.Target.Distance = GetDistance(ESP.Target.FakeHead1.Position) 
+            print(ESP.Target.Distance)
+            end
             --print(ESP.Target.Distance)
             
             ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag," DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag," Distance"),ESP.Target.Distance)
@@ -494,7 +503,7 @@ RunService.Heartbeat:Connect(function()
                        end  
                  
                         
-                        ESP.Drawing.Name.Text = ESP.Mode == "Player" and Target.Name or ESP.Mode ~= "Player" and Target.Name --or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
+                        ESP.Drawing.Name.Text = Target.Name --ESP.Mode == "Player" and Target.Name or ESP.Mode ~= "Player" and Target.Name --or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
                         
                 local Str = '';
 				Str = Str .. Format('[%d] ', tonumber(ESP.Target.Distance));
