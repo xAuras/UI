@@ -405,7 +405,7 @@ LastRefresh = tick()
     for Target,ESP in pairs(DrawingLibrary.ESP) do
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
         
-        if ESP.Mode == "Mob" and ESP.Target.Character == nil or ESP.Mode == "Mob" and ESP.Target.Character ~= nil and not ESP.Target.Character:IsDescendantOf(workspace) then
+        if ESP.Mode == "Mob" and ESP.Target.Character ~= nil and not ESP.Target.Character:IsDescendantOf(workspace) then
             RemoveESPSelf(ESP.Target.Character)
         end    
         --[[
