@@ -382,7 +382,7 @@ local function Format(format, ...)
 	return string.format(format, ...);
 end
 
-local RefreshRate = 25
+local RefreshRate = 15
 local LastRefresh = 0
 
 RunService.Heartbeat:Connect(function()
@@ -392,17 +392,21 @@ LastRefresh = tick()
     for Target,ESP in pairs(DrawingLibrary.ESP) do
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
         
+        --[[
         if ESP.Mode == "Mob" then
-            print(ESP.Target.Character,ESP.Target.RootPart)
-        end    
+            --print(ESP.Target.Character,ESP.Target.RootPart)
+        end  
+        ]]
         
         if ESP.Mode == "NPC" then
         ESP.Target.RootPart = ESP.Target.Character.FakeHead1
         end    
         
+        --[[
         if ESP.Mode ~= "Player" then
            -- print(ESP.Target.Character)
         end
+        ]]
             
         if ESP.Target.Character and ESP.Target.RootPart and ESP.Mode == "Player" or ESP.Mode == "NPC" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("FakeHead1") or ESP.Mode == "Mob" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("Head") then
            
@@ -502,14 +506,20 @@ LastRefresh = tick()
                 
    
                 
-                    if ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Head") or ESP.Mode == "NPC" and ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("FakeHead1") then--and ESP.Mode == "Player" or ESP.Mode ~= "Player" and ESP.Drawing.Name.Visible and ESP.Target.Character.Parent ~= nil and ESP.Target.Character.Parent:FindFirstChild("Head") then
+                    if ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("HumanoidRootPart") and ESP.Mode ~= "NPC" or ESP.Mode == "NPC" and ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("FakeHead1") then--and ESP.Mode == "Player" or ESP.Mode ~= "Player" and ESP.Drawing.Name.Visible and ESP.Target.Character.Parent ~= nil and ESP.Target.Character.Parent:FindFirstChild("Head") then
                         
                         local Character 
                         if ESP.Mode == "NPC" then
                         Character = ESP.Target.Character:FindFirstChild("FakeHead1")    
-                        else
+                        elseif ESP.Mode == "Player" then
                         Character = ESP.Target.Character:FindFirstChild("Head")
-                       end  
+                        elseif ESP.Mode == "Mob" then
+                        if ESP.Target.Character:FindFirstChild("Head") then
+                        Character = ESP.Target.Character:FindFirstChild("Head")
+                        else
+                         Character = ESP.Target.Character:FindFirstChild("HumanoidRootPart")   
+                        end
+                       end
                  
                         
                         ESP.Drawing.Name.Text = Target.Name --ESP.Mode == "Player" and Target.Name or ESP.Mode ~= "Player" and Target.Name --or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
