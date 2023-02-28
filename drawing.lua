@@ -474,7 +474,14 @@ RunService.Heartbeat:Connect(function()
                         
                         local Character = ESP.Target.Character:FindFirstChild("Head")
                         
-                        ESP.Drawing.Name.Text = string.format("[".."%s\n%i".."]",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
+                        ESP.Drawing.Name.Text = ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
+                        
+                local Str = '';
+				Str = Str .. Format('[%d] ', Distance);
+				if Character.Parent:FindFirstChildOfClass("Humanoid") then
+			    Str = Str .. Format('[%d/%d] [%s%%]', Character.Parent:FindFirstChildOfClass("Humanoid").Health, Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth, math.floor(Character.Parent:FindFirstChildOfClass("Humanoid").Health / Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth * 100));
+				end
+		          ESP.Drawing.Distance.Text = Str
                         --ESP.Drawing.Name.Text = string.format("%s\n%i studs",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
                         ESP.Drawing.Name.Color = ESP.Target.Color --color3ToRGB(Window.Flags["Player ESP Color"][6]) --Color3.fromRGB(255, 81, 81)
                         ESP.Drawing.Name.Position = WTS(Character.Position + Vector3.new(0,GetFlag(ESP.Flags,ESP.Flag," YOffset"),0)) + nameVector2
@@ -483,6 +490,14 @@ RunService.Heartbeat:Connect(function()
                         ESP.Drawing.Name.Center = true
                         ESP.Drawing.Name.Visible = true
                         ESP.Drawing.Name.Font = 0
+                        
+                    ESP.Drawing.Distance.Color = Color3.fromRGB(192,192,192)  
+                    ESP.Drawing.Distance.Position = WTS(Character.Position + Vector3.new(0,Window.Flags["Player ESP YOffset"],0)) + distanceVector2
+                    ESP.Drawing.Distance.Size = 16
+                    ESP.Drawing.Distance.Outline = true
+                    ESP.Drawing.Distance.Center = true
+                    ESP.Drawing.Distance.Visible = true
+                    ESP.Drawing.Distance.Font = 0
         
         --[[
                         ESP.Drawing.Name.Color = ESP.Target.Color
@@ -493,6 +508,9 @@ RunService.Heartbeat:Connect(function()
                         ESP.Drawing.Name.Text = string.format("[".."%s\n%i".."]",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
                         ESP.Drawing.Name.Position = WTS(ESP.Target.Character:FindFirstChild("Head").Position + Vector3.new(0,Window.Flags["Player ESP YOffset"],0)) + nameVector2 --V2New(BoxPosition.X + BoxSize.X / 2, BoxPosition.Y + BoxSize.Y)
                         ]]
+                    else
+                        ESP.Drawing.Distance.Visible = false
+                        ESP.Drawing.Name.Visible = false
                     end
                 end
                 
@@ -549,6 +567,12 @@ RunService.Heartbeat:Connect(function()
         ESP.Drawing.TracerOutline.Visible = GetFlag(ESP.Flags,ESP.Flag,"/Tracer/Outline") and ESP.Drawing.Tracer.Visible or false
 ]]
         ESP.Drawing.Name.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag," Enabled") or false
+        if not ESP.Drawing.Name.Visible then
+        ESP.Drawing.Distance.Visible = false
+        else
+            ESP.Drawing.Distance.Visible = true
+        end
+        
     end
 end)
 
