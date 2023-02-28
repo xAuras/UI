@@ -380,7 +380,8 @@ RunService.Heartbeat:Connect(function()
         if ESP.Target.Character and ESP.Target.RootPart then
             ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
             ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
-
+            print(ESP.Target.Distance)
+            
             ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag," DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag," Distance"),ESP.Target.Distance)
             ESP.Target.Health,ESP.Target.MaxHealth,ESP.Target.IsAlive = GetHealth(Target,ESP.Target.Character,ESP.Mode)
             ESP.Target.InEnemyTeam,ESP.Target.TeamColor = GetTeam(Target,ESP.Target.Character,ESP.Mode)
@@ -477,7 +478,7 @@ RunService.Heartbeat:Connect(function()
                         ESP.Drawing.Name.Text = ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
                         
                 local Str = '';
-				Str = Str .. Format('[%d] ', ESP.Target.Distance);
+				Str = Str .. Format('[%d] ', tonumber(ESP.Target.Distance));
 				if Character.Parent:FindFirstChildOfClass("Humanoid") then
 			    Str = Str .. Format('[%d/%d] [%s%%]', Character.Parent:FindFirstChildOfClass("Humanoid").Health, Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth, math.floor(Character.Parent:FindFirstChildOfClass("Humanoid").Health / Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth * 100));
 				end
