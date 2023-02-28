@@ -387,19 +387,19 @@ RunService.Heartbeat:Connect(function()
     for Target,ESP in pairs(DrawingLibrary.ESP) do
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
         
+        if ESP.Mode == "NPC" then
+        ESP.Target.RootPart = ESP.Target.Character.FakeHead1
+        end    
+        
         if ESP.Mode ~= "Player" then
            -- print(ESP.Target.Character)
         end
             
         if ESP.Target.Character and ESP.Target.RootPart and ESP.Mode == "Player" or ESP.Mode == "NPC" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("FakeHead1") or ESP.Mode == "Mob" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("Head") then
-            if ESP.Mode ~= "NPC" then
+           
             ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
             ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
-            elseif ESP.Mode == "NPC" then
-            ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.Character.FakeHead1.Position)
-            ESP.Target.Distance = GetDistance(ESP.Target.Character.FakeHead1.Position) 
-            print(ESP.Target.Distance)
-            end
+
             --print(ESP.Target.Distance)
             
             ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag," DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag," Distance"),ESP.Target.Distance)
