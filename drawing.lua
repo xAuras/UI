@@ -493,7 +493,7 @@ RunService.Heartbeat:Connect(function()
                         ESP.Drawing.Name.Font = 0
                         
                     ESP.Drawing.Distance.Color = Color3.fromRGB(192,192,192)  
-                    ESP.Drawing.Distance.Position = WTS(Character.Position + Vector3.new(0,Window.Flags["Player ESP YOffset"],0)) + distanceVector2
+                    ESP.Drawing.Distance.Position = WTS(Character.Position + Vector3.new(0,GetFlag(ESP.Flags,ESP.Flag," YOffset"),0)) + distanceVector2
                     ESP.Drawing.Distance.Size = 16
                     ESP.Drawing.Distance.Outline = true
                     ESP.Drawing.Distance.Center = true
