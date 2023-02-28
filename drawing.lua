@@ -44,7 +44,7 @@ local function HighlightNew()
 end
 local function DrawingNew(Type,Properties)
     local Drawing = Drawing.new(Type)
-    --if not Properties then return Drawing end
+    if not Properties then return Drawing end
     for Property,Value in pairs(Properties) do
         Drawing[Property] = Value
     end return Drawing
@@ -59,16 +59,16 @@ local function GetFontFromName(FontName)
     or 0
 end
 
---[[local function GetDistanceFromCamera(Position)
+local function GetDistance(Position)
     return (Position - Camera.CFrame.Position).Magnitude
-end]]
-local function CheckDistance(Enabled,D1,D2)
-    if not Enabled then return true end
-    return D1 <= D2
 end
-local function ClampDistance(Enabled,D1,D2)
-    if not Enabled then return D1 end
-    return Clamp(1 / D2 * 1000,0,D1)
+local function CheckDistance(Enabled,P1,P2)
+    if not Enabled then return true end
+    return P1 >= P2
+end
+local function ClampDistance(Enabled,P1,P2)
+    if not Enabled then return P1 end
+    return Clamp(1 / P2 * 1000,0,P1)
 end
 local function DynamicFOV(Enabled,FOV)
     if not Enabled then return FOV end
@@ -220,7 +220,7 @@ function DrawingLibrary:AddObject(Object,ObjectName,ObjectPosition,GlobalFlag,Fl
         Target = {Name = ObjectName,Position = ObjectPosition},
         Flag = Flag,GlobalFlag = GlobalFlag,Flags = Flags,
 
-        Name = DrawingNew("Text", { Visible = false, ZIndex = 1, Outline = true, Center = true })
+        Name = DrawingNew("Text",{Visible = false,ZIndex = 1,Center = true,Outline = true})
     }
 end
 function DrawingLibrary:AddESP(Target,Mode,Flag,Flags)
@@ -231,21 +231,21 @@ function DrawingLibrary:AddESP(Target,Mode,Flag,Flags)
         Flag = Flag,Flags = Flags,
         Highlight = HighlightNew(),
         Drawing = {
-            BoxOutline       = DrawingNew("Square",   { Visible = false, ZIndex = 0 }),
-            Box              = DrawingNew("Square",   { Visible = false, ZIndex = 1 }),
-            HealthBarOutline = DrawingNew("Square",   { Visible = false, ZIndex = 0 }),
-            HealthBar        = DrawingNew("Square",   { Visible = false, ZIndex = 1 }),
-            TracerOutline    = DrawingNew("Line",     { Visible = false, ZIndex = 0 }),
-            Tracer           = DrawingNew("Line",     { Visible = false, ZIndex = 1 }),
-            HeadDotOutline   = DrawingNew("Circle",   { Visible = false, ZIndex = 0 }),
-            HeadDot          = DrawingNew("Circle",   { Visible = false, ZIndex = 1 }),
-            ArrowOutline     = DrawingNew("Triangle", { Visible = false, ZIndex = 0 }),
-            Arrow            = DrawingNew("Triangle", { Visible = false, ZIndex = 1 }),
+            BoxOutline       = DrawingNew("Square",  {Visible = false,ZIndex = 0                                                }),
+            Box              = DrawingNew("Square",  {Visible = false,ZIndex = 1                                                }),
+            HealthBarOutline = DrawingNew("Square",  {Visible = false,ZIndex = 0,Filled = true                                  }),
+            HealthBar        = DrawingNew("Square",  {Visible = false,ZIndex = 1,Filled = true                                  }),
+            TracerOutline    = DrawingNew("Line",    {Visible = false,ZIndex = 0                                                }),
+            Tracer           = DrawingNew("Line",    {Visible = false,ZIndex = 1                                                }),
+            HeadDotOutline   = DrawingNew("Circle",  {Visible = false,ZIndex = 0                                                }),
+            HeadDot          = DrawingNew("Circle",  {Visible = false,ZIndex = 1                                                }),
+            ArrowOutline     = DrawingNew("Triangle",{Visible = false,ZIndex = 0                                                }),
+            Arrow            = DrawingNew("Triangle",{Visible = false,ZIndex = 1                                                }),
 
-            Name             = DrawingNew("Text",     { Color = WhiteColor, Visible = false, ZIndex = 1, Outline = true, Center = true }),
-            Distance         = DrawingNew("Text",     { Color = WhiteColor, Visible = false, ZIndex = 0, Outline = true, Center = true }),
-            Health           = DrawingNew("Text",     { Color = WhiteColor, Visible = false, ZIndex = 0, Outline = true, Center = true }),
-            Weapon           = DrawingNew("Text",     { Color = WhiteColor, Visible = false, ZIndex = 0, Outline = true, Center = true })
+            Name             = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
+            Distance         = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor}),
+            Health           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor}),
+            Weapon           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor})
         }
     }
 end
@@ -269,54 +269,55 @@ function DrawingLibrary:RemoveObject(Target)
 end
 
 function DrawingLibrary:SetupCursor(Flags)
-    local Cursor        = DrawingNew("Triangle", { Color = WhiteColor, Filled = true, Thickness = 1, Transparency = 1, Visible = true, ZIndex = 2 })
-    local CursorOutline = DrawingNew("Triangle", { Color = BlackColor, Filled = true, Thickness = 1, Transparency = 1, Visible = true, ZIndex = 1 })
+    local Cursor = DrawingNew("Image",{
+        Data = Parvus.Cursor,
+        Size = V2New(64,64) / 1.5,
+        Rounding = 0,
 
-    local CrosshairL = DrawingNew("Line", { Thickness = 1.5, Transparency = 1, Visible = true, ZIndex = 3 })
-    local CrosshairR = DrawingNew("Line", { Thickness = 1.5, Transparency = 1, Visible = true, ZIndex = 3 })
-    local CrosshairT = DrawingNew("Line", { Thickness = 1.5, Transparency = 1, Visible = true, ZIndex = 3 })
-    local CrosshairB = DrawingNew("Line", { Thickness = 1.5, Transparency = 1, Visible = true, ZIndex = 3 })
+        Transparency = 1,
+        Visible = false,
+        ZIndex = 3
+    })
 
     RunService.Heartbeat:Connect(function()
-        local CursorEnabled = Flags["Mouse/Enabled"] and UserInputService.MouseBehavior == Enum.MouseBehavior.Default and not UserInputService.MouseIconEnabled
-        local CrosshairEnabled = Flags["Mouse/Crosshair/Enabled"] and UserInputService.MouseBehavior ~= Enum.MouseBehavior.Default and not UserInputService.MouseIconEnabled
-        local Mouse = UserInputService:GetMouseLocation()
+        Cursor.Visible = Flags["Mouse/Enabled"] and UserInputService.MouseBehavior == Enum.MouseBehavior.Default and not UserInputService.MouseIconEnabled
+        if Cursor.Visible then Cursor.Position = UserInputService:GetMouseLocation() - Cursor.Size / 2 end
+    end)
+end
 
-        Cursor.Visible = CursorEnabled
-        CursorOutline.Visible = CursorEnabled
+function DrawingLibrary:SetupCrosshair(Flags)
+    local CrosshairL = DrawingNew("Line",{Thickness = 1.5,Transparency = 1,Visible = false,ZIndex = 2})
+    local CrosshairR = DrawingNew("Line",{Thickness = 1.5,Transparency = 1,Visible = false,ZIndex = 2})
+    local CrosshairT = DrawingNew("Line",{Thickness = 1.5,Transparency = 1,Visible = false,ZIndex = 2})
+    local CrosshairB = DrawingNew("Line",{Thickness = 1.5,Transparency = 1,Visible = false,ZIndex = 2})
 
-        CrosshairL.Visible = CrosshairEnabled
-        CrosshairR.Visible = CrosshairEnabled
-        CrosshairT.Visible = CrosshairEnabled
-        CrosshairB.Visible = CrosshairEnabled
+    RunService.Heartbeat:Connect(function()
+        local CrosshairEnabled = Flags["Crosshair/Enabled"] and UserInputService.MouseBehavior ~= Enum.MouseBehavior.Default and not UserInputService.MouseIconEnabled
+        CrosshairL.Visible,CrosshairR.Visible,CrosshairT.Visible,CrosshairB.Visible = CrosshairEnabled,CrosshairEnabled,CrosshairEnabled,CrosshairEnabled
 
-        if CursorEnabled then
-            Cursor.PointA = Mouse + V2New(0,15)
-            Cursor.PointB = Mouse
-            Cursor.PointC = Mouse + V2New(10,10)
-
-            CursorOutline.PointA = Cursor.PointA + V2New(0,1)
-            CursorOutline.PointB = Cursor.PointB
-            CursorOutline.PointC = Cursor.PointC + V2New(1,0)
-        end
         if CrosshairEnabled then
-            local Gap = Flags["Mouse/Crosshair/Gap"]
-            local Size = Flags["Mouse/Crosshair/Size"]
-            local Color = Flags["Mouse/Crosshair/Color"][6]
+            local Gap = Flags["Crosshair/Gap"]
+            local Size = Flags["Crosshair/Size"]
+            local Color = Flags["Crosshair/Color"]
+            local Mouse = UserInputService:GetMouseLocation()
 
-            CrosshairL.Color = Color
+            CrosshairL.Color = Color[6]
+            CrosshairL.Transparency = 1-Color[4]
             CrosshairL.From = Mouse - V2New(Gap,0)
             CrosshairL.To = Mouse - V2New(Size + Gap,0)
 
-            CrosshairR.Color = Color
+            CrosshairR.Color = Color[6]
+            CrosshairR.Transparency = 1-Color[4]
             CrosshairR.From = Mouse + V2New(Gap + 1,0)
             CrosshairR.To = Mouse + V2New(Size + (Gap + 1),0)
 
-            CrosshairT.Color = Color
+            CrosshairT.Color = Color[6]
+            CrosshairT.Transparency = 1-Color[4]
             CrosshairT.From = Mouse - V2New(0,Gap)
             CrosshairT.To = Mouse - V2New(0,Size + Gap)
 
-            CrosshairB.Color = Color
+            CrosshairB.Color = Color[6]
+            CrosshairB.Transparency = 1-Color[4]
             CrosshairB.From = Mouse + V2New(0,Gap + 1)
             CrosshairB.To = Mouse + V2New(0,Size + (Gap + 1))
         end
@@ -363,15 +364,11 @@ RunService.Heartbeat:Connect(function()
         end
 
         local Position = ESP.IsBasePart and ESP.Target.Position.Position or ESP.Target.Position
-        local ScreenPosition,OnScreen,Distance = WorldToScreen(Position)
+        local ScreenPosition,OnScreen = WorldToScreen(Position)
+        local Distance = GetDistance(Position)
 
-        local InTheRange = CheckDistance(
-            GetFlag(ESP.Flags,ESP.GlobalFlag,"/DistanceCheck"),
-            Distance,GetFlag(ESP.Flags,ESP.GlobalFlag,"/Distance")
-        )
-
-        ESP.Name.Visible = (OnScreen and InTheRange) and
-        (GetFlag(ESP.Flags,ESP.GlobalFlag,"/Enabled") and GetFlag(ESP.Flags,ESP.Flag,"/Enabled")) or false
+        local InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.GlobalFlag,"/DistanceCheck"),GetFlag(ESP.Flags,ESP.GlobalFlag,"/Distance"),Distance)
+        ESP.Name.Visible = (OnScreen and InTheRange) and (GetFlag(ESP.Flags,ESP.GlobalFlag,"/Enabled") and GetFlag(ESP.Flags,ESP.Flag,"/Enabled")) or false
 
         if ESP.Name.Visible then local Color = GetFlag(ESP.Flags,ESP.Flag,"/Color")
             ESP.Name.Transparency = 1-Color[4] ESP.Name.Color = Color[6]
@@ -385,8 +382,10 @@ RunService.Heartbeat:Connect(function()
     for Target,ESP in pairs(DrawingLibrary.ESP) do
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
         if ESP.Target.Character and ESP.Target.RootPart then
-            ESP.Target.ScreenPosition,ESP.Target.OnScreen,ESP.Target.Distance = WorldToScreen(ESP.Target.RootPart.Position)
-            ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag,"/DistanceCheck"),ESP.Target.Distance,GetFlag(ESP.Flags,ESP.Flag,"/Distance"))
+            ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
+            ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
+
+            ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag,"/DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag,"/Distance"),ESP.Target.Distance)
             ESP.Target.Health,ESP.Target.MaxHealth,ESP.Target.IsAlive = GetHealth(Target,ESP.Target.Character,ESP.Mode)
             ESP.Target.InEnemyTeam,ESP.Target.TeamColor = GetTeam(Target,ESP.Target.Character,ESP.Mode)
             ESP.Target.Color = GetFlag(ESP.Flags,ESP.Flag,"/TeamColor") and ESP.Target.TeamColor
