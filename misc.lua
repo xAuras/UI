@@ -324,6 +324,9 @@ function Misc:SetupLighting(Flags)
         end
     end)
     RunService.Heartbeat:Connect(function()
+         if not Flags["Lighting/Enabled"] then
+         task.wait(0.1)
+         end              
         if Flags["Lighting/Enabled"] then
             for Property in pairs(Misc.DefaultLighting) do
                 local CustomValue = Flags["Lighting/"..Property]
