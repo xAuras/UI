@@ -595,7 +595,7 @@ RunService.Heartbeat:Connect(function()
         ESP.Drawing.Tracer.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag,"/Tracer/Enabled") or false
         ESP.Drawing.TracerOutline.Visible = GetFlag(ESP.Flags,ESP.Flag,"/Tracer/Outline") and ESP.Drawing.Tracer.Visible or false
 ]]
-        ESP.Drawing.Name.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag," Enabled") or false
+        ESP.Drawing.Name.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag," Enabled") or false --
         if not ESP.Drawing.Name.Visible then
         ESP.Drawing.Distance.Visible = false
         else
