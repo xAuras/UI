@@ -395,7 +395,7 @@ local function Format(format, ...)
 	return string.format(format, ...);
 end
 
-local RefreshRate = 20
+local RefreshRate = 25
 local LastRefresh = 0
 
 RunService.Heartbeat:Connect(function()
@@ -406,14 +406,16 @@ LastRefresh = tick()
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
         
         if ESP.Mode == "Mob" and ESP.Target.Character == nil then
-            return
-            --RemoveESPSelf(ESP.Target.Character)
-        end   
-        
-        if ESP.Mode == "Mob" and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Attributes") and ESP.Target.Character.Attributes:FindFirstChild("Health") and ESP.Target.Character.Attributes:FindFirstChild("Health").Value <= 0 then 
+           -- return
             RemoveESPSelf(ESP.Target.Character)
             return
-        end
+        end   
+        
+     --   if ESP.Mode == "Mob" and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Attributes") and ESP.Target.Character.Attributes:FindFirstChild("Health") and ESP.Target.Character.Attributes:FindFirstChild("Health").Value <= 0 then 
+      --      RemoveESPSelf(ESP.Target.Character)
+       --     return
+        --end
+        
         --[[
         if ESP.Mode == "Mob" then
             --print(ESP.Target.Character,ESP.Target.RootPart)
