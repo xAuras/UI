@@ -513,13 +513,12 @@ LastRefresh = tick()
                         Character = ESP.Target.Character:FindFirstChild("FakeHead1")    
                         elseif ESP.Mode == "Player" then
                         Character = ESP.Target.Character:FindFirstChild("Head")
-                        elseif ESP.Mode == "Mob" then
-                        if ESP.Target.Character:FindFirstChild("Head") then
+                        elseif ESP.Mode == "Mob" and ESP.Target.Character:FindFirstChild("Head") then
                         Character = ESP.Target.Character:FindFirstChild("Head")
-                        else
+                        elseif ESP.Mode == "Mob" and not ESP.Target.Character:FindFirstChild("Head") then
                          Character = ESP.Target.Character:FindFirstChild("HumanoidRootPart")   
                         end
-                       end
+                       
                  
                         
                         ESP.Drawing.Name.Text = Target.Name --ESP.Mode == "Player" and Target.Name or ESP.Mode ~= "Player" and Target.Name --or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
