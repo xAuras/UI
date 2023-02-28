@@ -385,7 +385,7 @@ RunService.Heartbeat:Connect(function()
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
         
         if ESP.Mode ~= "Player" then
-            print(ESP.Target.Character)
+           -- print(ESP.Target.Character)
         end
             
         if ESP.Target.Character and ESP.Target.RootPart then
@@ -484,9 +484,14 @@ RunService.Heartbeat:Connect(function()
                 
    
                 
-                    if ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Head") then--and ESP.Mode == "Player" or ESP.Mode ~= "Player" and ESP.Drawing.Name.Visible and ESP.Target.Character.Parent ~= nil and ESP.Target.Character.Parent:FindFirstChild("Head") then
+                    if ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Head") or ESP.Mode == "NPC" and ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("FakeHead1") then--and ESP.Mode == "Player" or ESP.Mode ~= "Player" and ESP.Drawing.Name.Visible and ESP.Target.Character.Parent ~= nil and ESP.Target.Character.Parent:FindFirstChild("Head") then
                         
-                        local Character = ESP.Target.Character:FindFirstChild("Head")
+                        local Character 
+                        if ESP.Mode == "NPC" then
+                        Character = ESP.Target.Character:FindFirstChild("FakeHead1")    
+                        else
+                        Character = ESP.Target.Character:FindFirstChild("Head")
+                       end  
                  
                         
                         ESP.Drawing.Name.Text = ESP.Mode == "Player" and Target.Name or ESP.Mode ~= "Player" and Target.Name --or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
