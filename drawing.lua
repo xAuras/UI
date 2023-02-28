@@ -395,14 +395,14 @@ local function Format(format, ...)
 	return string.format(format, ...);
 end
 
-local RefreshRate = 25
+local RefreshRate = 20
 local LastRefresh = 0
 
 RunService.Heartbeat:Connect(function()
 if (tick() - LastRefresh) > (RefreshRate / 1000) then    
 --pcall(function()
 LastRefresh = tick() 
-    for Target,ESP in pairs(DrawingLibrary.ESP) do
+    for Target,ESP in next, (DrawingLibrary.ESP) do
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
         
         if ESP.Mode == "Mob" and ESP.Target.Character == nil then
@@ -411,10 +411,10 @@ LastRefresh = tick()
             return
         end   
         
-     --   if ESP.Mode == "Mob" and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Attributes") and ESP.Target.Character.Attributes:FindFirstChild("Health") and ESP.Target.Character.Attributes:FindFirstChild("Health").Value <= 0 then 
-      --      RemoveESPSelf(ESP.Target.Character)
-       --     return
-        --end
+        if ESP.Mode == "Mob" and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Attributes") and ESP.Target.Character.Attributes:FindFirstChild("Health") and ESP.Target.Character.Attributes:FindFirstChild("Health").Value <= 0 then 
+            RemoveESPSelf(ESP.Target.Character)
+            return
+        end
         
         --[[
         if ESP.Mode == "Mob" then
