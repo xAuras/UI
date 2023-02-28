@@ -125,7 +125,10 @@ end
 function GetHealth(Target,Character,Mode)
     if Mode == "NPC" then
         return 100,100,100
-    end    
+    end
+    
+    if Mode == "Mob" and Character:FindFirstChild("Attributes") and Character.Attributes:FindFirstChild("Health") and Character.Attributes:FindFirstChild("MaxHealth") then return Character.Attributes:FindFirstChild("Health").Value, Character.Attributes:FindFirstChild("MaxHealth").Value, Character.Attributes:FindFirstChild("Health").Value > 0 end
+    
     local Humanoid = FindFirstChildOfClass(Character,"Humanoid")
     if not Humanoid then return end
     return Humanoid.Health,
@@ -527,6 +530,8 @@ LastRefresh = tick()
 				Str = Str .. Format('[%d] ', tonumber(ESP.Target.Distance));
 				if Character.Parent:FindFirstChildOfClass("Humanoid") and ESP.Mode ~= "NPC" then
 			    Str = Str .. Format('[%d/%d] [%s%%]', Character.Parent:FindFirstChildOfClass("Humanoid").Health, Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth, math.floor(Character.Parent:FindFirstChildOfClass("Humanoid").Health / Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth * 100));
+				elseif ESP.Mode == "Mob" and not Character.Parent:FindFirstChildOfClass("Humanoid") and Character.Parent:FindFirstChild("Attributes") and Character.Parent.Attributes:FindFirstChild("Health") and Character.Parent.Attributes:FindFirstChild("MaxHealth") then
+				Str = Str .. Format('[%d/%d] [%s%%]', Character.Parent.Attributes.Health.Value, Character.Parent.Attributes.MaxHealth.Value, math.floor(Character.Parent.Attributes.Health.Value / Character.Parent.Attributes.MaxHealth.Value * 100));
 				end
 		          ESP.Drawing.Distance.Text = Str
                         --ESP.Drawing.Name.Text = string.format("%s\n%i studs",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
