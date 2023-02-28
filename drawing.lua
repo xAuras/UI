@@ -543,8 +543,9 @@ LastRefresh = tick()
                         end
                        
                  
-                        
+                        if ESP.Drawing.Name.Text ~= Target.Name then
                         ESP.Drawing.Name.Text = Target.Name --ESP.Mode == "Player" and Target.Name or ESP.Mode ~= "Player" and Target.Name --or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
+                        end
                         
                 local Str = '';
 				Str = Str .. Format('[%d] ', tonumber(ESP.Target.Distance));
@@ -555,21 +556,45 @@ LastRefresh = tick()
 				end
 		          ESP.Drawing.Distance.Text = Str
                         --ESP.Drawing.Name.Text = string.format("%s\n%i studs",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
+                        if ESP.Drawing.Name.Color ~= ESP.Target.Color then
                         ESP.Drawing.Name.Color = ESP.Target.Color --color3ToRGB(Window.Flags["Player ESP Color"][6]) --Color3.fromRGB(255, 81, 81)
+                        end
                         ESP.Drawing.Name.Position = WTS(Character.Position + Vector3.new(0,GetFlag(ESP.Flags,ESP.Flag," YOffset"),0)) + nameVector2
-                        ESP.Drawing.Name.Size = 16
-                        ESP.Drawing.Name.Outline = true
-                        ESP.Drawing.Name.Center = true
-                        ESP.Drawing.Name.Visible = true
-                        ESP.Drawing.Name.Font = 0
-                        
-                    ESP.Drawing.Distance.Color = Color3.fromRGB(192,192,192)  
+                    if ESP.Drawing.Name.Size ~= 16 then
+                    ESP.Drawing.Name.Size = 16
+                    end
+                    if ESP.Drawing.Name.Outline == false then
+                    ESP.Drawing.Name.Outline = true
+                    end
+                    if ESP.Drawing.Name.Center == false then
+                    ESP.Drawing.Name.Center = true
+                    end
+                    if ESP.Drawing.Name.Visible == false then
+                    ESP.Drawing.Name.Visible = true
+                    end
+                    if ESP.Drawing.Name.Font ~= 0 then
+                    ESP.Drawing.Name.Font = 0
+                    end
+                    
+                    if ESP.Drawing.Distance.Color ~= Color3.fromRGB(192,192,192) then
+                       ESP.Drawing.Distance.Color = Color3.fromRGB(192,192,192)  
+                    end
                     ESP.Drawing.Distance.Position = WTS(Character.Position + Vector3.new(0,GetFlag(ESP.Flags,ESP.Flag," YOffset"),0)) + distanceVector2
+                    if ESP.Drawing.Distance.Size ~= 16 then
                     ESP.Drawing.Distance.Size = 16
+                    end
+                    if ESP.Drawing.Distance.Outline == false then
                     ESP.Drawing.Distance.Outline = true
+                    end
+                    if ESP.Drawing.Distance.Center == false then
                     ESP.Drawing.Distance.Center = true
+                    end
+                    if ESP.Drawing.Distance.Visible == false then
                     ESP.Drawing.Distance.Visible = true
+                    end
+                    if ESP.Drawing.Distance.Font ~= 0 then
                     ESP.Drawing.Distance.Font = 0
+                    end
         
         --[[
                         ESP.Drawing.Name.Color = ESP.Target.Color
@@ -581,8 +606,12 @@ LastRefresh = tick()
                         ESP.Drawing.Name.Position = WTS(ESP.Target.Character:FindFirstChild("Head").Position + Vector3.new(0,Window.Flags["Player ESP YOffset"],0)) + nameVector2 --V2New(BoxPosition.X + BoxSize.X / 2, BoxPosition.Y + BoxSize.Y)
                         ]]
                     else
-                        ESP.Drawing.Distance.Visible = false
-                        ESP.Drawing.Name.Visible = false
+                if ESP.Drawing.Name.Visible == true then
+                ESP.Drawing.Name.Visible = false
+                end
+                if ESP.Drawing.Distance.Visible == true then
+                ESP.Drawing.Distance.Visible = false
+                end
                     end
                 end
                 
@@ -616,8 +645,12 @@ LastRefresh = tick()
                 ]]
             end
             else
+                if ESP.Drawing.Name.Visible == true then
                 ESP.Drawing.Name.Visible = false
+                end
+                if ESP.Drawing.Distance.Visible == true then
                 ESP.Drawing.Distance.Visible = false
+                end
         end
 
        -- local TeamCheck = (not GetFlag(ESP.Flags,ESP.Flag,"/TeamCheck") and not ESP.Target.InEnemyTeam) or ESP.Target.InEnemyTeam
@@ -641,12 +674,9 @@ LastRefresh = tick()
         ESP.Drawing.Tracer.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag,"/Tracer/Enabled") or false
         ESP.Drawing.TracerOutline.Visible = GetFlag(ESP.Flags,ESP.Flag,"/Tracer/Outline") and ESP.Drawing.Tracer.Visible or false
 ]]
-        ESP.Drawing.Name.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag," Enabled") or false
-        if not ESP.Drawing.Name.Visible then
-        ESP.Drawing.Distance.Visible = false
-        else
-            ESP.Drawing.Distance.Visible = true
-        end
+
+ESP.Drawing.Name.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag," Enabled") or false
+ESP.Drawing.Distance.Visible = ESP.Drawing.Name.Visible
         
     end
   --end)
