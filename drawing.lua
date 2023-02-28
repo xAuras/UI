@@ -391,13 +391,13 @@ RunService.Heartbeat:Connect(function()
            -- print(ESP.Target.Character)
         end
             
-        if ESP.Target.Character and ESP.Target.RootPart then
+        if ESP.Target.Character and ESP.Target.RootPart and ESP.Mode == "Player" or ESP.Mode == "NPC" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("FakeHead1") or ESP.Mode == "Mob" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("Head") then
             if ESP.Mode ~= "NPC" then
             ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
             ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
             elseif ESP.Mode == "NPC" then
-            ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.FakeHead1.Position)
-            ESP.Target.Distance = GetDistance(ESP.Target.FakeHead1.Position) 
+            ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.Character.FakeHead1.Position)
+            ESP.Target.Distance = GetDistance(ESP.Target.Character.FakeHead1.Position) 
             print(ESP.Target.Distance)
             end
             --print(ESP.Target.Distance)
@@ -595,7 +595,7 @@ RunService.Heartbeat:Connect(function()
         ESP.Drawing.Tracer.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag,"/Tracer/Enabled") or false
         ESP.Drawing.TracerOutline.Visible = GetFlag(ESP.Flags,ESP.Flag,"/Tracer/Outline") and ESP.Drawing.Tracer.Visible or false
 ]]
-        ESP.Drawing.Name.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag," Enabled") or false --
+        ESP.Drawing.Name.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag," Enabled") or false
         if not ESP.Drawing.Name.Visible then
         ESP.Drawing.Distance.Visible = false
         else
