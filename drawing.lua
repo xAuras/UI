@@ -471,11 +471,16 @@ RunService.Heartbeat:Connect(function()
                     end
                      ]]
                 
-                    if ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Head") then
+                if ESP.Mode ~= "Player" then
+                    print(ESP.Target.Character)
+                end
+                
+                    if ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Head") then--and ESP.Mode == "Player" or ESP.Mode ~= "Player" and ESP.Drawing.Name.Visible and ESP.Target.Character.Parent ~= nil and ESP.Target.Character.Parent:FindFirstChild("Head") then
                         
                         local Character = ESP.Target.Character:FindFirstChild("Head")
+                 
                         
-                        ESP.Drawing.Name.Text = ESP.Mode == "Player" and Target.Name --or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
+                        ESP.Drawing.Name.Text = ESP.Mode == "Player" and Target.Name or ESP.Mode ~= "Player" and Target.Name --or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
                         
                 local Str = '';
 				Str = Str .. Format('[%d] ', tonumber(ESP.Target.Distance));
