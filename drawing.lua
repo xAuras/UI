@@ -380,7 +380,7 @@ RunService.Heartbeat:Connect(function()
         if ESP.Target.Character and ESP.Target.RootPart then
             ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
             ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
-            print(ESP.Target.Distance)
+            --print(ESP.Target.Distance)
             
             ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag," DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag," Distance"),ESP.Target.Distance)
             ESP.Target.Health,ESP.Target.MaxHealth,ESP.Target.IsAlive = GetHealth(Target,ESP.Target.Character,ESP.Mode)
