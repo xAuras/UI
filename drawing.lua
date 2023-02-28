@@ -406,7 +406,8 @@ LastRefresh = tick()
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
         
         if ESP.Mode == "Mob" and ESP.Target.Character == nil then
-            RemoveESPSelf(ESP.Target.Character)
+            return
+            --RemoveESPSelf(ESP.Target.Character)
         end    
         --[[
         if ESP.Mode == "Mob" then
