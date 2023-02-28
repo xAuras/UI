@@ -192,7 +192,7 @@ elseif game.GameId == 1168263273 then
     end
     function GetTeam(Target,Character,Mode)
         local Team,LPTeam = GetPlayerTeam(Target),GetPlayerTeam(LocalPlayer)
-        return LPTeam ~= Team or Team == "FFA",Tortoiseshell.Teams.Colors[Team]
+        return LPTeam ~= Team or true--Team == "FFA",Tortoiseshell.Teams.Colors[Team]
     end
 elseif game.GameId == 1586272220 then
     local function GetPlayerTank(Player)
