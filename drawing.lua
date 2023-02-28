@@ -127,7 +127,7 @@ function GetHealth(Target,Character,Mode)
         return 100,100,100
     end
     
-    if Mode == "Mob" and Character:FindFirstChild("Attributes") and Character.Attributes:FindFirstChild("Health") and Character.Attributes:FindFirstChild("MaxHealth") then return Character.Attributes:FindFirstChild("Health").Value, Character.Attributes:FindFirstChild("MaxHealth").Value, Character.Attributes:FindFirstChild("Health").Value > 0 end
+   -- if Mode == "Mob" and Character:FindFirstChild("Attributes") and Character.Attributes:FindFirstChild("Health") and Character.Attributes:FindFirstChild("MaxHealth") then return Character.Attributes:FindFirstChild("Health").Value, Character.Attributes:FindFirstChild("MaxHealth").Value, Character.Attributes:FindFirstChild("Health").Value > 0 end
     
     local Humanoid = FindFirstChildOfClass(Character,"Humanoid")
     if not Humanoid then return end
@@ -262,6 +262,16 @@ function DrawingLibrary:AddESP(Target,Mode,Flag,Flags)
     }
 end
 
+
+local function RemoveESPSelf(Target)
+    local ESP = DrawingLibrary.ESP[Target] if not ESP then return end
+    for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
+    ESP.Highlight:Destroy()
+
+    Clear(DrawingLibrary.ESP[Target])
+    DrawingLibrary.ESP[Target] = nil
+end
+
 function DrawingLibrary:RemoveESP(Target)
     local ESP = DrawingLibrary.ESP[Target] if not ESP then return end
     for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
@@ -385,16 +395,19 @@ local function Format(format, ...)
 	return string.format(format, ...);
 end
 
-local RefreshRate = 20
+local RefreshRate = 15
 local LastRefresh = 0
 
 RunService.Heartbeat:Connect(function()
 if (tick() - LastRefresh) > (RefreshRate / 1000) then    
-pcall(function()
+--pcall(function()
 LastRefresh = tick() 
     for Target,ESP in pairs(DrawingLibrary.ESP) do
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
         
+        if ESP.Mode == "Mob" and ESP.Target.Character == nil or ESP.Mode == "Mob" and ESP.Target.Character ~= nil and not ESP.Target.Character:IsDescendantOf(workspace) then
+            RemoveESPSelf(ESP.Target.Character)
+        end    
         --[[
         if ESP.Mode == "Mob" then
             --print(ESP.Target.Character,ESP.Target.RootPart)
@@ -411,7 +424,7 @@ LastRefresh = tick()
         end
         ]]
             
-        if ESP.Target.Character and ESP.Target.RootPart and ESP.Mode == "Player" or ESP.Mode == "NPC" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("FakeHead1") or ESP.Mode == "Mob" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("HumanoidRootPart") then
+        if ESP.Target.Character and ESP.Target.RootPart and ESP.Mode == "Player" or ESP.Mode == "NPC" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("FakeHead1") or ESP.Mode == "Mob" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("Head") then
            
             ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
             ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
@@ -514,12 +527,13 @@ LastRefresh = tick()
                         local Character 
                         if ESP.Mode == "NPC" then
                         Character = ESP.Target.Character:FindFirstChild("FakeHead1")    
-                        elseif ESP.Mode == "Player" then
+                        else
+                       -- elseif ESP.Mode == "Player" then
                         Character = ESP.Target.Character:FindFirstChild("Head")
-                        elseif ESP.Mode == "Mob" and ESP.Target.Character:FindFirstChild("Head") then
-                        Character = ESP.Target.Character:FindFirstChild("Head")
-                        elseif ESP.Mode == "Mob" and not ESP.Target.Character:FindFirstChild("Head") then
-                         Character = ESP.Target.Character:FindFirstChild("HumanoidRootPart")   
+                       -- elseif ESP.Mode == "Mob" and ESP.Target.Character:FindFirstChild("Head") then
+                      --  Character = ESP.Target.Character:FindFirstChild("Head")
+                      --  elseif ESP.Mode == "Mob" and not ESP.Target.Character:FindFirstChild("Head") then
+                       --  Character = ESP.Target.Character:FindFirstChild("HumanoidRootPart")   
                         end
                        
                  
@@ -530,8 +544,8 @@ LastRefresh = tick()
 				Str = Str .. Format('[%d] ', tonumber(ESP.Target.Distance));
 				if Character.Parent:FindFirstChildOfClass("Humanoid") and ESP.Mode ~= "NPC" then
 			    Str = Str .. Format('[%d/%d] [%s%%]', Character.Parent:FindFirstChildOfClass("Humanoid").Health, Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth, math.floor(Character.Parent:FindFirstChildOfClass("Humanoid").Health / Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth * 100));
-				elseif ESP.Mode == "Mob" and not Character.Parent:FindFirstChildOfClass("Humanoid") and Character.Parent:FindFirstChild("Attributes") and Character.Parent.Attributes:FindFirstChild("Health") and Character.Parent.Attributes:FindFirstChild("MaxHealth") then
-				Str = Str .. Format('[%d/%d] [%s%%]', Character.Parent.Attributes.Health.Value, Character.Parent.Attributes.MaxHealth.Value, math.floor(Character.Parent.Attributes.Health.Value / Character.Parent.Attributes.MaxHealth.Value * 100));
+			--	elseif ESP.Mode == "Mob" and not Character.Parent:FindFirstChildOfClass("Humanoid") and Character.Parent:FindFirstChild("Attributes") and Character.Parent.Attributes:FindFirstChild("Health") and Character.Parent.Attributes:FindFirstChild("MaxHealth") then
+			--	Str = Str .. Format('[%d/%d] [%s%%]', Character.Parent.Attributes.Health.Value, Character.Parent.Attributes.MaxHealth.Value, math.floor(Character.Parent.Attributes.Health.Value / Character.Parent.Attributes.MaxHealth.Value * 100));
 				end
 		          ESP.Drawing.Distance.Text = Str
                         --ESP.Drawing.Name.Text = string.format("%s\n%i studs",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
@@ -595,6 +609,9 @@ LastRefresh = tick()
                 end
                 ]]
             end
+            else
+                ESP.Drawing.Name.Visible = false
+                ESP.Drawing.Distance.Visible = false
         end
 
        -- local TeamCheck = (not GetFlag(ESP.Flags,ESP.Flag,"/TeamCheck") and not ESP.Target.InEnemyTeam) or ESP.Target.InEnemyTeam
@@ -626,7 +643,7 @@ LastRefresh = tick()
         end
         
     end
-    end)
+  --end)
     end
 end)
 
