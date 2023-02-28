@@ -477,7 +477,7 @@ RunService.Heartbeat:Connect(function()
                         ESP.Drawing.Name.Text = ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
                         
                 local Str = '';
-				Str = Str .. Format('[%d] ', Distance);
+				Str = Str .. Format('[%d] ', ESP.Target.Distance);
 				if Character.Parent:FindFirstChildOfClass("Humanoid") then
 			    Str = Str .. Format('[%d/%d] [%s%%]', Character.Parent:FindFirstChildOfClass("Humanoid").Health, Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth, math.floor(Character.Parent:FindFirstChildOfClass("Humanoid").Health / Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth * 100));
 				end
