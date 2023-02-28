@@ -387,7 +387,7 @@ RunService.Heartbeat:Connect(function()
 
             ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag,"/DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag,"/Distance"),ESP.Target.Distance)
             ESP.Target.Health,ESP.Target.MaxHealth,ESP.Target.IsAlive = GetHealth(Target,ESP.Target.Character,ESP.Mode)
-            ESP.Target.InEnemyTeam,ESP.Target.TeamColor = true--GetTeam(Target,ESP.Target.Character,ESP.Mode)
+            ESP.Target.InEnemyTeam,ESP.Target.TeamColor = true --GetTeam(Target,ESP.Target.Character,ESP.Mode)
             ESP.Target.Color = GetFlag(ESP.Flags,ESP.Flag,"/TeamColor") and ESP.Target.TeamColor
             or (ESP.Target.InEnemyTeam and GetFlag(ESP.Flags,ESP.Flag,"/Enemy")[6]
             or GetFlag(ESP.Flags,ESP.Flag,"/Ally")[6])
