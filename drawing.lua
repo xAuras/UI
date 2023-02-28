@@ -356,27 +356,23 @@ Workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
     Camera = Workspace.CurrentCamera
 end)
 
-RunService.Heartbeat:Connect(function()
-    for Object,ESP in pairs(DrawingLibrary.ObjectESP) do
-        if not GetFlag(ESP.Flags,ESP.GlobalFlag,"/Enabled")
-        or not GetFlag(ESP.Flags,ESP.Flag,"/Enabled") then
-            ESP.Name.Visible = false continue
-        end
 
-        local Position = ESP.IsBasePart and ESP.Target.Position.Position or ESP.Target.Position
-        local ScreenPosition,OnScreen = WorldToScreen(Position)
-        local Distance = GetDistance(Position)
-
-        local InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.GlobalFlag,"/DistanceCheck"),GetFlag(ESP.Flags,ESP.GlobalFlag,"/Distance"),Distance)
-        ESP.Name.Visible = (OnScreen and InTheRange) and (GetFlag(ESP.Flags,ESP.GlobalFlag,"/Enabled") and GetFlag(ESP.Flags,ESP.Flag,"/Enabled")) or false
-
-        if ESP.Name.Visible then local Color = GetFlag(ESP.Flags,ESP.Flag,"/Color")
-            ESP.Name.Transparency = 1-Color[4] ESP.Name.Color = Color[6]
-            ESP.Name.Text = string.format("%s\n%i studs",ESP.Target.Name,Distance)
-            ESP.Name.Position = V2New(ScreenPosition.X,ScreenPosition.Y)
-        end
+    local Camera = workspace.CurrentCamera
+    --local IsDescendantOf = game.IsDescendantOf
+    local strformat = string.format
+    
+   local function WTS(Position)
+        local VP,bool = Camera:WorldToViewportPoint(Position)
+        return Vector2.new(VP.x, VP.y),bool,VP.Z
     end
-end)
+    
+    local nameVector2 = Vector2.new(0, -17.5)
+    local distanceVector2 = Vector2.new(0, -5)
+    
+local function Format(format, ...)
+	return string.format(format, ...);
+end
+
 
 RunService.Heartbeat:Connect(function()
     for Target,ESP in pairs(DrawingLibrary.ESP) do
@@ -385,14 +381,17 @@ RunService.Heartbeat:Connect(function()
             ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
             ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
 
-            ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag,"/DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag,"/Distance"),ESP.Target.Distance)
+            ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag," DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag," Distance"),ESP.Target.Distance)
             ESP.Target.Health,ESP.Target.MaxHealth,ESP.Target.IsAlive = GetHealth(Target,ESP.Target.Character,ESP.Mode)
             ESP.Target.InEnemyTeam,ESP.Target.TeamColor = GetTeam(Target,ESP.Target.Character,ESP.Mode)
-            ESP.Target.Color = GetFlag(ESP.Flags,ESP.Flag,"/Enemy")[6] --GetFlag(ESP.Flags,ESP.Flag,"/TeamColor") and ESP.Target.TeamColor
+            ESP.Target.Color = GetFlag(ESP.Flags,ESP.Flag," Color")[6] --GetFlag(ESP.Flags,ESP.Flag,"/TeamColor") and ESP.Target.TeamColor
             --or (ESP.Target.InEnemyTeam and GetFlag(ESP.Flags,ESP.Flag,"/Enemy")[6]
             --or GetFlag(ESP.Flags,ESP.Flag,"/Ally")[6])
+        
+--GetFlag(ESP.Flags,ESP.Flag,"/Color1")[6]
 
             if ESP.Target.OnScreen and ESP.Target.InTheRange then
+                --[[
                 if ESP.Highlight.Enabled then
                     local OutlineColor = GetFlag(ESP.Flags,ESP.Flag,"/Highlight/OutlineColor")
                     ESP.Highlight.Adornee = ESP.Target.Character ESP.Highlight.FillColor = ESP.Target.Color
@@ -438,7 +437,9 @@ RunService.Heartbeat:Connect(function()
                         end
                     end
                 end
-                if ESP.Drawing.Box.Visible or ESP.Drawing.Name.Visible then
+                ]]
+                if ESP.Drawing.Name.Visible then --ESP.Drawing.Box.Visible or ESP.Drawing.Name.Visible then
+                    --[[
                     local BoxPosition,BoxSize = CalculateBox(ESP.Target.Character,ESP.Target.ScreenPosition,ESP.Target.Distance)
                     ESP.Target.HealthPercent = ESP.Target.Health / ESP.Target.MaxHealth ESP.Target.BoxTooSmall = BoxSize.Y <= 12
 
@@ -456,6 +457,7 @@ RunService.Heartbeat:Connect(function()
                         ESP.Drawing.BoxOutline.Size = ESP.Drawing.Box.Size
                         ESP.Drawing.BoxOutline.Position = ESP.Drawing.Box.Position
                     end
+                   
                     if ESP.Drawing.HealthBar.Visible and not ESP.Target.BoxTooSmall then
                         ESP.Drawing.HealthBar.Color = LerpColor(RedColor,GreenColor,ESP.Target.HealthPercent)
                         ESP.Drawing.HealthBarOutline.Transparency = ESP.Drawing.Box.Transparency
@@ -466,16 +468,36 @@ RunService.Heartbeat:Connect(function()
                         ESP.Drawing.HealthBar.Size = V2New(ESP.Drawing.HealthBarOutline.Size.X - 2,-ESP.Target.HealthPercent * (ESP.Drawing.HealthBarOutline.Size.Y - 2))
                         ESP.Drawing.HealthBar.Position = ESP.Drawing.HealthBarOutline.Position + V2New(1,ESP.Drawing.HealthBarOutline.Size.Y - 1)
                     end
-                    if ESP.Drawing.Name.Visible then
+                     ]]
+                
+                    if ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Head") then
+                        
+                        local Character = ESP.Target.Character:FindFirstChild("Head")
+                        
+                        --ESP.Drawing.Name.Text = string.format("[".."%s\n%i".."]",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
+                        ESP.Drawing.Name.Text = string.format("%s\n%i studs",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
+                        ESP.Drawing.Name.Color = ESP.Target.Color --color3ToRGB(Window.Flags["Player ESP Color"][6]) --Color3.fromRGB(255, 81, 81)
+                        ESP.Drawing.Name.Position = WTS(Character.Position + Vector3.new(0,GetFlag(ESP.Flags,ESP.Flag," YOffset"),0)) + nameVector2
+                        ESP.Drawing.Name.Size = 16
+                        ESP.Drawing.Name.Outline = true
+                        ESP.Drawing.Name.Center = true
+                        ESP.Drawing.Name.Visible = true
+                        ESP.Drawing.Name.Font = 0
+        
+        --[[
+                        ESP.Drawing.Name.Color = ESP.Target.Color
                         ESP.Drawing.Name.Outline = GetFlag(ESP.Flags,ESP.Flag,"/Name/Outline")
                         ESP.Drawing.Name.Transparency = 1-GetFlag(ESP.Flags,ESP.Flag,"/Name/Transparency")
                         ESP.Drawing.Name.Font = GetFontFromName(GetFlag(ESP.Flags,ESP.Flag,"/Name/Font")[1])
                         ESP.Drawing.Name.Size = ClampDistance(GetFlag(ESP.Flags,ESP.Flag,"/Name/Autoscale"),GetFlag(ESP.Flags,ESP.Flag,"/Name/Size"),ESP.Target.Distance)
-                        ESP.Drawing.Name.Text = string.format("%s\n%i studs",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
-                        ESP.Drawing.Name.Position = V2New(BoxPosition.X + BoxSize.X / 2, BoxPosition.Y + BoxSize.Y)
+                        ESP.Drawing.Name.Text = string.format("[".."%s\n%i".."]",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
+                        ESP.Drawing.Name.Position = WTS(ESP.Target.Character:FindFirstChild("Head").Position + Vector3.new(0,Window.Flags["Player ESP YOffset"],0)) + nameVector2 --V2New(BoxPosition.X + BoxSize.X / 2, BoxPosition.Y + BoxSize.Y)
+                        ]]
                     end
                 end
+                
             else
+                --[[
                 if ESP.Drawing.Arrow.Visible then
                     local Direction = GetRelative(ESP.Target.RootPart.Position).Unit
                     local SideLength = GetFlag(ESP.Flags,ESP.Flag,"/Arrow/Width") / 2
@@ -501,13 +523,14 @@ RunService.Heartbeat:Connect(function()
                     ESP.Drawing.ArrowOutline.PointB = RTCT
                     ESP.Drawing.ArrowOutline.PointC = RTCBR
                 end
+                ]]
             end
         end
 
-        local TeamCheck = (not GetFlag(ESP.Flags,ESP.Flag,"/TeamCheck") and not ESP.Target.InEnemyTeam) or ESP.Target.InEnemyTeam
-        local Visible = ESP.Target.OnScreen and ESP.Target.InTheRange and ESP.Target.RootPart and ESP.Target.IsAlive and TeamCheck
-        local ArrowVisible = not ESP.Target.OnScreen and ESP.Target.InTheRange and ESP.Target.RootPart and ESP.Target.IsAlive and TeamCheck
-
+       -- local TeamCheck = (not GetFlag(ESP.Flags,ESP.Flag,"/TeamCheck") and not ESP.Target.InEnemyTeam) or ESP.Target.InEnemyTeam
+        local Visible = ESP.Target.OnScreen and ESP.Target.InTheRange and ESP.Target.RootPart and ESP.Target.IsAlive --and TeamCheck
+       -- local ArrowVisible = not ESP.Target.OnScreen and ESP.Target.InTheRange and ESP.Target.RootPart and ESP.Target.IsAlive and TeamCheck
+--[[
         ESP.Highlight.Enabled = Visible and GetFlag(ESP.Flags,ESP.Flag,"/Highlight/Enabled") or false
 
         ESP.Drawing.Box.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag,"/Box/Enabled") or false
@@ -524,8 +547,8 @@ RunService.Heartbeat:Connect(function()
 
         ESP.Drawing.Tracer.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag,"/Tracer/Enabled") or false
         ESP.Drawing.TracerOutline.Visible = GetFlag(ESP.Flags,ESP.Flag,"/Tracer/Outline") and ESP.Drawing.Tracer.Visible or false
-
-        ESP.Drawing.Name.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag,"/Name/Enabled") or false
+]]
+        ESP.Drawing.Name.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag," Enabled") or false
     end
 end)
 
