@@ -178,6 +178,10 @@ function Misc:ServerHop()
     end
 end
 
+function Misc:ServerHopLow()
+Teleport()
+end
+
 --[[
 function Misc:JoinDiscord()
     Request({
@@ -302,7 +306,7 @@ function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
         Callback = Parvus.Utilities.Misc.ServerHop})
     
         TeleportSection:Button({Name = "Server Hop (Low Servers)",Side = "Right",
-        Callback = Teleport()})
+        Callback = Parvus.Utilities.Misc.ServerHopLow})
         end    
         --[[
         local CrosshairSection = SettingsTab:Section({Name = "Custom Crosshair",Side = "Right"}) do
