@@ -3,7 +3,7 @@ local RunService = game:GetService("RunService")
 local PlayerService = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 
-local DrawingLibrary = {ESP = {},ObjectESP = {}}
+local DrawingLibrary = {ESP = {},ObjectESP = {},NPC = {},Mob = {}}
 repeat task.wait() until PlayerService.LocalPlayer
 local LocalPlayer = PlayerService.LocalPlayer
 local Camera = Workspace.CurrentCamera
@@ -235,38 +235,93 @@ function DrawingLibrary:AddObject(Object,ObjectName,ObjectPosition,GlobalFlag,Fl
         Name = DrawingNew("Text",{Visible = false,ZIndex = 1,Center = true,Outline = true})
     }
 end
+
 function DrawingLibrary:AddESP(Target,Mode,Flag,Flags)
     if DrawingLibrary.ESP[Target] then return end
 
     DrawingLibrary.ESP[Target] = {
         Target = {},Mode = Mode,
         Flag = Flag,Flags = Flags,
-        Highlight = HighlightNew(),
+      --  Highlight = HighlightNew(),
         Drawing = {
-            BoxOutline       = DrawingNew("Square",  {Visible = false,ZIndex = 0                                                }),
-            Box              = DrawingNew("Square",  {Visible = false,ZIndex = 1                                                }),
-            HealthBarOutline = DrawingNew("Square",  {Visible = false,ZIndex = 0,Filled = true                                  }),
-            HealthBar        = DrawingNew("Square",  {Visible = false,ZIndex = 1,Filled = true                                  }),
-            TracerOutline    = DrawingNew("Line",    {Visible = false,ZIndex = 0                                                }),
-            Tracer           = DrawingNew("Line",    {Visible = false,ZIndex = 1                                                }),
-            HeadDotOutline   = DrawingNew("Circle",  {Visible = false,ZIndex = 0                                                }),
-            HeadDot          = DrawingNew("Circle",  {Visible = false,ZIndex = 1                                                }),
-            ArrowOutline     = DrawingNew("Triangle",{Visible = false,ZIndex = 0                                                }),
-            Arrow            = DrawingNew("Triangle",{Visible = false,ZIndex = 1                                                }),
+        --    BoxOutline       = DrawingNew("Square",  {Visible = false,ZIndex = 0                                                }),
+         --   Box              = DrawingNew("Square",  {Visible = false,ZIndex = 1                                                }),
+         --   HealthBarOutline = DrawingNew("Square",  {Visible = false,ZIndex = 0,Filled = true                                  }),
+         --   HealthBar        = DrawingNew("Square",  {Visible = false,ZIndex = 1,Filled = true                                  }),
+         --   TracerOutline    = DrawingNew("Line",    {Visible = false,ZIndex = 0                                                }),
+         --   Tracer           = DrawingNew("Line",    {Visible = false,ZIndex = 1                                                }),
+         --   HeadDotOutline   = DrawingNew("Circle",  {Visible = false,ZIndex = 0                                                }),
+          --  HeadDot          = DrawingNew("Circle",  {Visible = false,ZIndex = 1                                                }),
+          --  ArrowOutline     = DrawingNew("Triangle",{Visible = false,ZIndex = 0                                                }),
+          --  Arrow            = DrawingNew("Triangle",{Visible = false,ZIndex = 1                                                }),
 
             Name             = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
             Distance         = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
-            Health           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor}),
-            Weapon           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor})
+           -- Health           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor}),
+           -- Weapon           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor})
+        }
+    }
+end
+
+function DrawingLibrary:AddMob(Target,Mode,Flag,Flags)
+    if DrawingLibrary.Mob[Target] then return end
+
+    DrawingLibrary.Mob[Target] = {
+        Target = {},Mode = Mode,
+        Flag = Flag,Flags = Flags,
+      --  Highlight = HighlightNew(),
+        Drawing = {
+        --    BoxOutline       = DrawingNew("Square",  {Visible = false,ZIndex = 0                                                }),
+         --   Box              = DrawingNew("Square",  {Visible = false,ZIndex = 1                                                }),
+         --   HealthBarOutline = DrawingNew("Square",  {Visible = false,ZIndex = 0,Filled = true                                  }),
+         --   HealthBar        = DrawingNew("Square",  {Visible = false,ZIndex = 1,Filled = true                                  }),
+         --   TracerOutline    = DrawingNew("Line",    {Visible = false,ZIndex = 0                                                }),
+         --   Tracer           = DrawingNew("Line",    {Visible = false,ZIndex = 1                                                }),
+         --   HeadDotOutline   = DrawingNew("Circle",  {Visible = false,ZIndex = 0                                                }),
+          --  HeadDot          = DrawingNew("Circle",  {Visible = false,ZIndex = 1                                                }),
+          --  ArrowOutline     = DrawingNew("Triangle",{Visible = false,ZIndex = 0                                                }),
+          --  Arrow            = DrawingNew("Triangle",{Visible = false,ZIndex = 1                                                }),
+
+            Name             = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
+            Distance         = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
+           -- Health           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor}),
+           -- Weapon           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor})
+        }
+    }
+end
+
+function DrawingLibrary:AddNPC(Target,Mode,Flag,Flags)
+    if DrawingLibrary.Mob[Target] then return end
+
+    DrawingLibrary.NPC[Target] = {
+        Target = {},Mode = Mode,
+        Flag = Flag,Flags = Flags,
+      --  Highlight = HighlightNew(),
+        Drawing = {
+        --    BoxOutline       = DrawingNew("Square",  {Visible = false,ZIndex = 0                                                }),
+         --   Box              = DrawingNew("Square",  {Visible = false,ZIndex = 1                                                }),
+         --   HealthBarOutline = DrawingNew("Square",  {Visible = false,ZIndex = 0,Filled = true                                  }),
+         --   HealthBar        = DrawingNew("Square",  {Visible = false,ZIndex = 1,Filled = true                                  }),
+         --   TracerOutline    = DrawingNew("Line",    {Visible = false,ZIndex = 0                                                }),
+         --   Tracer           = DrawingNew("Line",    {Visible = false,ZIndex = 1                                                }),
+         --   HeadDotOutline   = DrawingNew("Circle",  {Visible = false,ZIndex = 0                                                }),
+          --  HeadDot          = DrawingNew("Circle",  {Visible = false,ZIndex = 1                                                }),
+          --  ArrowOutline     = DrawingNew("Triangle",{Visible = false,ZIndex = 0                                                }),
+          --  Arrow            = DrawingNew("Triangle",{Visible = false,ZIndex = 1                                                }),
+
+            Name             = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
+            Distance         = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
+           -- Health           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor}),
+           -- Weapon           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor})
         }
     }
 end
 
 
 local function RemoveESPSelf(Target)
-    local ESP = DrawingLibrary.ESP[Target] if not ESP then return end
+    local ESP = DrawingLibrary.Mob[Target] if not ESP then return end
     for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
-    ESP.Highlight:Destroy()
+ --   ESP.Highlight:Destroy()
 
     Clear(DrawingLibrary.ESP[Target])
     DrawingLibrary.ESP[Target] = nil
@@ -275,11 +330,30 @@ end
 function DrawingLibrary:RemoveESP(Target)
     local ESP = DrawingLibrary.ESP[Target] if not ESP then return end
     for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
-    ESP.Highlight:Destroy()
+ --   ESP.Highlight:Destroy()
 
     Clear(DrawingLibrary.ESP[Target])
     DrawingLibrary.ESP[Target] = nil
 end
+
+function DrawingLibrary:RemoveMob(Target)
+    local ESP = DrawingLibrary.Mob[Target] if not ESP then return end
+    for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
+ --   ESP.Highlight:Destroy()
+
+    Clear(DrawingLibrary.ESP[Target])
+    DrawingLibrary.ESP[Target] = nil
+end
+
+function DrawingLibrary:RemoveNPC(Target)
+    local ESP = DrawingLibrary.NPC[Target] if not ESP then return end
+    for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
+ --   ESP.Highlight:Destroy()
+
+    Clear(DrawingLibrary.ESP[Target])
+    DrawingLibrary.ESP[Target] = nil
+end
+
 
 function DrawingLibrary:RemoveObject(Target)
     local ESP = DrawingLibrary.ObjectESP[Target]
@@ -681,6 +755,251 @@ ESP.Drawing.Name.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag," Enabled") or
 ESP.Drawing.Distance.Visible = ESP.Drawing.Name.Visible
         
     end
+    
+        for Target,ESP in next, (DrawingLibrary.Mob) do
+        ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
+        
+        if ESP.Mode == "Mob" and ESP.Target.Character == nil then
+            return
+            --RemoveESPSelf(ESP.Target.Character)
+            --return
+        end   
+        
+        if ESP.Mode == "Mob" and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Attributes") and ESP.Target.Character.Attributes:FindFirstChild("Health") and ESP.Target.Character.Attributes:FindFirstChild("Health").Value <= 0 then 
+            RemoveESPSelf(ESP.Target.Character)
+            return
+        end
+
+        if ESP.Mode == "NPC" then
+        ESP.Target.RootPart = ESP.Target.Character.FakeHead1
+        end    
+
+        if ESP.Target.Character and ESP.Target.RootPart and ESP.Mode == "Player" or ESP.Mode == "NPC" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("FakeHead1") or ESP.Mode == "Mob" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("Head") then
+           
+            ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
+            ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
+
+            ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag," DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag," Distance"),ESP.Target.Distance)
+            ESP.Target.Health,ESP.Target.MaxHealth,ESP.Target.IsAlive = GetHealth(Target,ESP.Target.Character,ESP.Mode)
+            ESP.Target.InEnemyTeam = true --ESP.Target.InEnemyTeam,ESP.Target.TeamColor = GetTeam(Target,ESP.Target.Character,ESP.Mode)
+            ESP.Target.Color = GetFlag(ESP.Flags,ESP.Flag," Color")[6] --GetFlag(ESP.Flags,ESP.Flag,"/TeamColor") and ESP.Target.TeamColor
+
+            if ESP.Target.OnScreen and ESP.Target.InTheRange then
+
+                if ESP.Drawing.Name.Visible then --ESP.Drawing.Box.Visible or ESP.Drawing.Name.Visible then
+                
+                    if ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("HumanoidRootPart") and ESP.Mode ~= "NPC" or ESP.Mode == "NPC" and ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("FakeHead1") then--and ESP.Mode == "Player" or ESP.Mode ~= "Player" and ESP.Drawing.Name.Visible and ESP.Target.Character.Parent ~= nil and ESP.Target.Character.Parent:FindFirstChild("Head") then
+                        
+                        local Character 
+                        if ESP.Mode == "NPC" then
+                        Character = ESP.Target.Character:FindFirstChild("FakeHead1")    
+                        else
+                        Character = ESP.Target.Character:FindFirstChild("Head")
+                        end
+                       
+                 
+                        if ESP.Drawing.Name.Text ~= Target.Name then
+                        ESP.Drawing.Name.Text = Target.Name --ESP.Mode == "Player" and Target.Name or ESP.Mode ~= "Player" and Target.Name --or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
+                        end
+                        
+                local Str = '';
+				Str = Str .. Format('[%d] ', tonumber(ESP.Target.Distance));
+				if Character.Parent:FindFirstChildOfClass("Humanoid") and ESP.Mode ~= "NPC" then
+			    Str = Str .. Format('[%d/%d] [%s%%]', Character.Parent:FindFirstChildOfClass("Humanoid").Health, Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth, math.floor(Character.Parent:FindFirstChildOfClass("Humanoid").Health / Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth * 100));
+				end
+		          ESP.Drawing.Distance.Text = Str
+                        --ESP.Drawing.Name.Text = string.format("%s\n%i studs",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
+                        if ESP.Drawing.Name.Color ~= ESP.Target.Color then
+                        ESP.Drawing.Name.Color = ESP.Target.Color --color3ToRGB(Window.Flags["Player ESP Color"][6]) --Color3.fromRGB(255, 81, 81)
+                        end
+                        ESP.Drawing.Name.Position = WTS(Character.Position + Vector3.new(0,GetFlag(ESP.Flags,ESP.Flag," YOffset"),0)) + nameVector2
+                    if ESP.Drawing.Name.Size ~= 16 then
+                    ESP.Drawing.Name.Size = 16
+                    end
+                    if ESP.Drawing.Name.Outline == false then
+                    ESP.Drawing.Name.Outline = true
+                    end
+                    if ESP.Drawing.Name.Center == false then
+                    ESP.Drawing.Name.Center = true
+                    end
+                    if ESP.Drawing.Name.Visible == false then
+                    ESP.Drawing.Name.Visible = true
+                    end
+                    if ESP.Drawing.Name.Font ~= 0 then
+                    ESP.Drawing.Name.Font = 0
+                    end
+                    
+                    if ESP.Drawing.Distance.Color ~= Color3.fromRGB(192,192,192) then
+                       ESP.Drawing.Distance.Color = Color3.fromRGB(192,192,192)  
+                    end
+                    ESP.Drawing.Distance.Position = WTS(Character.Position + Vector3.new(0,GetFlag(ESP.Flags,ESP.Flag," YOffset"),0)) + distanceVector2
+                    if ESP.Drawing.Distance.Size ~= 16 then
+                    ESP.Drawing.Distance.Size = 16
+                    end
+                    if ESP.Drawing.Distance.Outline == false then
+                    ESP.Drawing.Distance.Outline = true
+                    end
+                    if ESP.Drawing.Distance.Center == false then
+                    ESP.Drawing.Distance.Center = true
+                    end
+                    if ESP.Drawing.Distance.Visible == false then
+                    ESP.Drawing.Distance.Visible = true
+                    end
+                    if ESP.Drawing.Distance.Font ~= 0 then
+                    ESP.Drawing.Distance.Font = 0
+                    end
+
+                    else
+                if ESP.Drawing.Name.Visible == true then
+                ESP.Drawing.Name.Visible = false
+                end
+                if ESP.Drawing.Distance.Visible == true then
+                ESP.Drawing.Distance.Visible = false
+                end
+                    end
+                end
+                
+            else
+
+            end
+            else
+                if ESP.Drawing.Name.Visible == true then
+                ESP.Drawing.Name.Visible = false
+                end
+                if ESP.Drawing.Distance.Visible == true then
+                ESP.Drawing.Distance.Visible = false
+                end
+        end
+
+        local Visible = ESP.Target.OnScreen and ESP.Target.InTheRange and ESP.Target.RootPart and ESP.Target.IsAlive 
+
+ESP.Drawing.Name.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag," Enabled") or false
+ESP.Drawing.Distance.Visible = ESP.Drawing.Name.Visible
+        
+        end
+
+        for Target,ESP in next, (DrawingLibrary.NPC) do
+        ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
+        
+        if ESP.Mode == "Mob" and ESP.Target.Character == nil then
+            return
+            --RemoveESPSelf(ESP.Target.Character)
+            --return
+        end   
+        
+        if ESP.Mode == "Mob" and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("Attributes") and ESP.Target.Character.Attributes:FindFirstChild("Health") and ESP.Target.Character.Attributes:FindFirstChild("Health").Value <= 0 then 
+            RemoveESPSelf(ESP.Target.Character)
+            return
+        end
+
+        if ESP.Mode == "NPC" then
+        ESP.Target.RootPart = ESP.Target.Character.FakeHead1
+        end    
+
+        if ESP.Target.Character and ESP.Target.RootPart and ESP.Mode == "Player" or ESP.Mode == "NPC" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("FakeHead1") or ESP.Mode == "Mob" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("Head") then
+           
+            ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
+            ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
+
+            ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag," DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag," Distance"),ESP.Target.Distance)
+            ESP.Target.Health,ESP.Target.MaxHealth,ESP.Target.IsAlive = GetHealth(Target,ESP.Target.Character,ESP.Mode)
+            ESP.Target.InEnemyTeam = true --ESP.Target.InEnemyTeam,ESP.Target.TeamColor = GetTeam(Target,ESP.Target.Character,ESP.Mode)
+            ESP.Target.Color = GetFlag(ESP.Flags,ESP.Flag," Color")[6] --GetFlag(ESP.Flags,ESP.Flag,"/TeamColor") and ESP.Target.TeamColor
+
+            if ESP.Target.OnScreen and ESP.Target.InTheRange then
+
+                if ESP.Drawing.Name.Visible then --ESP.Drawing.Box.Visible or ESP.Drawing.Name.Visible then
+                
+                    if ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("HumanoidRootPart") and ESP.Mode ~= "NPC" or ESP.Mode == "NPC" and ESP.Drawing.Name.Visible and ESP.Target.Character ~= nil and ESP.Target.Character:FindFirstChild("FakeHead1") then--and ESP.Mode == "Player" or ESP.Mode ~= "Player" and ESP.Drawing.Name.Visible and ESP.Target.Character.Parent ~= nil and ESP.Target.Character.Parent:FindFirstChild("Head") then
+                        
+                        local Character 
+                        if ESP.Mode == "NPC" then
+                        Character = ESP.Target.Character:FindFirstChild("FakeHead1")    
+                        else
+                        Character = ESP.Target.Character:FindFirstChild("Head")
+                        end
+                       
+                 
+                        if ESP.Drawing.Name.Text ~= Target.Name then
+                        ESP.Drawing.Name.Text = Target.Name --ESP.Mode == "Player" and Target.Name or ESP.Mode ~= "Player" and Target.Name --or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC")
+                        end
+                        
+                local Str = '';
+				Str = Str .. Format('[%d] ', tonumber(ESP.Target.Distance));
+				if Character.Parent:FindFirstChildOfClass("Humanoid") and ESP.Mode ~= "NPC" then
+			    Str = Str .. Format('[%d/%d] [%s%%]', Character.Parent:FindFirstChildOfClass("Humanoid").Health, Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth, math.floor(Character.Parent:FindFirstChildOfClass("Humanoid").Health / Character.Parent:FindFirstChildOfClass("Humanoid").MaxHealth * 100));
+				end
+		          ESP.Drawing.Distance.Text = Str
+                        --ESP.Drawing.Name.Text = string.format("%s\n%i studs",ESP.Mode == "Player" and Target.Name or (ESP.Target.InEnemyTeam and "Enemy NPC" or "Ally NPC"),ESP.Target.Distance)
+                        if ESP.Drawing.Name.Color ~= ESP.Target.Color then
+                        ESP.Drawing.Name.Color = ESP.Target.Color --color3ToRGB(Window.Flags["Player ESP Color"][6]) --Color3.fromRGB(255, 81, 81)
+                        end
+                        ESP.Drawing.Name.Position = WTS(Character.Position + Vector3.new(0,GetFlag(ESP.Flags,ESP.Flag," YOffset"),0)) + nameVector2
+                    if ESP.Drawing.Name.Size ~= 16 then
+                    ESP.Drawing.Name.Size = 16
+                    end
+                    if ESP.Drawing.Name.Outline == false then
+                    ESP.Drawing.Name.Outline = true
+                    end
+                    if ESP.Drawing.Name.Center == false then
+                    ESP.Drawing.Name.Center = true
+                    end
+                    if ESP.Drawing.Name.Visible == false then
+                    ESP.Drawing.Name.Visible = true
+                    end
+                    if ESP.Drawing.Name.Font ~= 0 then
+                    ESP.Drawing.Name.Font = 0
+                    end
+                    
+                    if ESP.Drawing.Distance.Color ~= Color3.fromRGB(192,192,192) then
+                       ESP.Drawing.Distance.Color = Color3.fromRGB(192,192,192)  
+                    end
+                    ESP.Drawing.Distance.Position = WTS(Character.Position + Vector3.new(0,GetFlag(ESP.Flags,ESP.Flag," YOffset"),0)) + distanceVector2
+                    if ESP.Drawing.Distance.Size ~= 16 then
+                    ESP.Drawing.Distance.Size = 16
+                    end
+                    if ESP.Drawing.Distance.Outline == false then
+                    ESP.Drawing.Distance.Outline = true
+                    end
+                    if ESP.Drawing.Distance.Center == false then
+                    ESP.Drawing.Distance.Center = true
+                    end
+                    if ESP.Drawing.Distance.Visible == false then
+                    ESP.Drawing.Distance.Visible = true
+                    end
+                    if ESP.Drawing.Distance.Font ~= 0 then
+                    ESP.Drawing.Distance.Font = 0
+                    end
+
+                    else
+                if ESP.Drawing.Name.Visible == true then
+                ESP.Drawing.Name.Visible = false
+                end
+                if ESP.Drawing.Distance.Visible == true then
+                ESP.Drawing.Distance.Visible = false
+                end
+                    end
+                end
+                
+            else
+
+            end
+            else
+                if ESP.Drawing.Name.Visible == true then
+                ESP.Drawing.Name.Visible = false
+                end
+                if ESP.Drawing.Distance.Visible == true then
+                ESP.Drawing.Distance.Visible = false
+                end
+        end
+
+        local Visible = ESP.Target.OnScreen and ESP.Target.InTheRange and ESP.Target.RootPart and ESP.Target.IsAlive 
+
+ESP.Drawing.Name.Visible = Visible and GetFlag(ESP.Flags,ESP.Flag," Enabled") or false
+ESP.Drawing.Distance.Visible = ESP.Drawing.Name.Visible
+        
+    end
+
   --end)
     end
 end)
