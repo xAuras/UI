@@ -453,7 +453,11 @@ LastRefresh = tick()
         ]]
         
         if ESP.Mode == "NPC" then
-        ESP.Target.RootPart = ESP.Target.Character.FakeHead1
+        if ESP.Target.Character:FindFirstChild("FakeHead1") then
+        ESP.Target.RootPart = ESP.Target.Character:FindFirstChild("FakeHead1")
+        else
+            return
+        end    
         end
         
     local Character = ESP.Target.Character
@@ -499,21 +503,23 @@ LastRefresh = tick()
             
                coroutine.wrap(function()
                 repeat 
-                task.wait()
-                --if (tick() - LastRefresh1) > (RefreshRate1 / 1000) then
-                 --   LastRefresh1 = tick()
+                game.RunService.Heartbeat:Wait()
+                if (tick() - LastRefresh1) > (RefreshRate1 / 1000) then
+                    LastRefresh1 = tick()
               --  pcall(function()
                 SP,onScreen1 = WorldToScreen(rootPart.Position)
                 inrange1 = CheckDistance(GetFlag(flag4,flag3," DistanceCheck"),GetFlag(flag4,flag3," Distance"),distance1)
                 health1,health2,isalive1 = GetHealth(target1,Character,mode1)
                 Visible = onScreen1 and inrange1 and rootPart and isalive1
                 --end)
-              --  end
+                end
               task.wait(0.05)
                 until Character == nil or not Character:IsDescendantOf(workspace) or Visible
                 if Character ~= nil and Character:IsDescendantOf(workspace) or Visible then
+                coroutine.wrap(function()
                     print('test',Character.Name,Visible)
                  AddESPSelf(Character,flag2,flag3,flag4)
+                 end)()
                 end
                 
                end)()
