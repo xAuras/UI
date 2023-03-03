@@ -463,7 +463,7 @@ LastRefresh = tick()
     end
     
     local returnESP = false
-    
+    local mode1 = ESP.Mode
     
     coroutine.wrap(function()
     if ESP.Mode ~= "Player" then
@@ -487,6 +487,7 @@ LastRefresh = tick()
                 local target1 = Target
                 local mode1 = ESP.Mode
                 local LastRefresh1 = 0
+                local RefreshRate1 = 25
                 
             coroutine.wrap(function()
                RemoveESPSelf(ESP.Target.Character)
@@ -495,7 +496,7 @@ LastRefresh = tick()
                coroutine.wrap(function()
                 repeat 
                 game.RunService.Heartbeat:Wait()
-                if (tick() - LastRefresh1) > (RefreshRate / 1000) then
+                if (tick() - LastRefresh1) > (RefreshRate1 / 1000) then
                     LastRefresh1 = tick()
                 pcall(function()
                 SP,onScreen1 = WorldToScreen(rootPart.Position)
@@ -521,11 +522,11 @@ LastRefresh = tick()
        end
     end)() 
   
-  if ESP.Mode == "Player" then
+  if mode1 == "Player" then
       returnESP = false
   end
   
-  if returnESP or ESP.Mode ~= "Player" and ESP.Target.Character == nil then
+  if returnESP or mode1 ~= "Player" and Character == nil then
       return
   end      
         
