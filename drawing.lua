@@ -458,7 +458,10 @@ LastRefresh = tick()
         
     local Character = ESP.Target.Character
     local returnESP = false
+    local mode1 = ESP.Mode
     
+    coroutine.wrap(function()
+    if ESP.Mode ~= "Player" then
        pcall(function()
          if ESP.Mode ~= "Player" then
         ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
@@ -478,24 +481,30 @@ LastRefresh = tick()
                 local isalive1 = ESP.Target.IsAlive
                 local target1 = Target
                 local mode1 = ESP.Mode
+                local LastRefresh1 = 0
+                
             coroutine.wrap(function()
                RemoveESPSelf(ESP.Target.Character)
-              end)()
+            end)()
+            
                coroutine.wrap(function()
                 repeat 
-                task.wait() 
+                game.RunService.Heartbeat:Wait()
+                if (tick() - LastRefresh1) > (RefreshRate / 1000) then
+                    LastRefresh1 = tick()
                 pcall(function()
                 SP,onScreen1 = WorldToScreen(rootPart.Position)
                 inrange1 = CheckDistance(GetFlag(flag4,flag3," DistanceCheck"),GetFlag(flag4,flag3," Distance"),distance1)
                 health1,health2,isalive1 = GetHealth(target1,ESP.target1.Character,mode1)
                 Visible = onScreen1 and inrange1 and rootPart and isalive1
                 end)
-                task.wait(0.05)
+                end
                 until Character == nil or not Character:IsDescendantOf(workspace) or Visible
-                end)()
                 if Visible and Character ~= nil and Character:IsDescendantOf(workspace) then
                  AddESPSelf(Character,flag2,flag3,flag4)
                 end
+               end)()
+            
                 
             end)()  
         returnESP = true    
@@ -503,10 +512,11 @@ LastRefresh = tick()
         end
        end)
        
-       if returnESP or ESP.Target.Character == nil then
+       if returnESP and mode1 ~= "Player" or mode1 ~= "Player" and ESP.Target.Character == nil then
            return 
-       end       
-
+       end
+       end
+      end)() 
         
         --[[
         if ESP.Mode ~= "Player" then
