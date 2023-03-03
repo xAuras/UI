@@ -50,9 +50,9 @@ end
 function TPReturner()
    local Site;
    if foundAnything == "" then
-       Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+       Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&excludeFullGames=true&limit=100'))
    else
-       Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+       Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&excludeFullGames=true&limit=100&cursor=' .. foundAnything))
    end
    local ID = ""
    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
@@ -130,9 +130,9 @@ end
 function TPReturner2()
    local Site;
    if foundAnything == "" then
-       Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+       Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&excludeFullGames=true&limit=100'))
    else
-       Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+       Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&excludeFullGames=true&limit=100&cursor=' .. foundAnything))
    end
    local ID = ""
    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
@@ -247,8 +247,8 @@ function Misc:ReJoin()
 end
 
 function Misc:ServerHop()
-    Teleport2()
-    --[[
+   -- Teleport2()
+    
     local DataDecoded,Servers = HttpService:JSONDecode(game:HttpGetAsync(
         "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/0?sortOrder=2&excludeFullGames=true&limit=100"
     )).data,{}
@@ -257,7 +257,7 @@ function Misc:ServerHop()
             table.insert(Servers,ServerData.id)
         end
     end
-    if #Servers > 0 then
+    if #Servers > 0 and tonumber(v.playing) > 12 then
         TeleportService:TeleportToPlaceInstance(
             game.PlaceId,Servers[math.random(#Servers)]
         )
@@ -268,7 +268,7 @@ function Misc:ServerHop()
             Duration = 5
         })
     end
-    ]]
+    
 end
 
 function Misc:ServerHopLow()
