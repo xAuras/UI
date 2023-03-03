@@ -4,8 +4,6 @@ local PlayerService = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 
 local DrawingLibrary = {ESP = {},ObjectESP = {}}
-
-local TempTable = {}
 repeat task.wait() until PlayerService.LocalPlayer
 local LocalPlayer = PlayerService.LocalPlayer
 local Camera = Workspace.CurrentCamera
@@ -237,35 +235,7 @@ function DrawingLibrary:AddObject(Object,ObjectName,ObjectPosition,GlobalFlag,Fl
         Name = DrawingNew("Text",{Visible = false,ZIndex = 1,Center = true,Outline = true})
     }
 end
-
 function DrawingLibrary:AddESP(Target,Mode,Flag,Flags)
-    if DrawingLibrary.ESP[Target] then return end
-
-    DrawingLibrary.ESP[Target] = {
-        Target = {},Mode = Mode,
-        Flag = Flag,Flags = Flags,
-        Highlight = HighlightNew(),
-        Drawing = {
-            BoxOutline       = DrawingNew("Square",  {Visible = false,ZIndex = 0                                                }),
-            Box              = DrawingNew("Square",  {Visible = false,ZIndex = 1                                                }),
-            HealthBarOutline = DrawingNew("Square",  {Visible = false,ZIndex = 0,Filled = true                                  }),
-            HealthBar        = DrawingNew("Square",  {Visible = false,ZIndex = 1,Filled = true                                  }),
-            TracerOutline    = DrawingNew("Line",    {Visible = false,ZIndex = 0                                                }),
-            Tracer           = DrawingNew("Line",    {Visible = false,ZIndex = 1                                                }),
-            HeadDotOutline   = DrawingNew("Circle",  {Visible = false,ZIndex = 0                                                }),
-            HeadDot          = DrawingNew("Circle",  {Visible = false,ZIndex = 1                                                }),
-            ArrowOutline     = DrawingNew("Triangle",{Visible = false,ZIndex = 0                                                }),
-            Arrow            = DrawingNew("Triangle",{Visible = false,ZIndex = 1                                                }),
-
-            Name             = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
-            Distance         = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
-            Health           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor}),
-            Weapon           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor})
-        }
-    }
-end
-
-local function AddESPSelf(Target,Mode,Flag,Flags)
     if DrawingLibrary.ESP[Target] then return end
 
     DrawingLibrary.ESP[Target] = {
@@ -453,96 +423,15 @@ LastRefresh = tick()
         ]]
         
         if ESP.Mode == "NPC" then
-        if ESP.Target.Character:FindFirstChild("FakeHead1") then
-        ESP.Target.RootPart = ESP.Target.Character:FindFirstChild("FakeHead1")
-        else
-            return
+        ESP.Target.RootPart = ESP.Target.Character.FakeHead1
         end    
-        end
-        
-    local Character = ESP.Target.Character
-    
-    if ESP.Mode ~= "Player" and Character == nil then
-        return 
-    end
-    
-    if ESP.Mode == nil then
-        return
-    end
-    
-    local returnESP = false
-    local mode1 = ESP.Mode
-    
-    coroutine.wrap(function()
-    if ESP.Mode ~= "Player" then
-       pcall(function()
-         if ESP.Mode ~= "Player" then
-        ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
-        ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag," DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag," Distance"),ESP.Target.Distance)
-        ESP.Target.Health,ESP.Target.MaxHealth,ESP.Target.IsAlive = GetHealth(Target,ESP.Target.Character,ESP.Mode)
-        local Visible = ESP.Target.OnScreen and ESP.Target.InTheRange and ESP.Target.RootPart and ESP.Target.IsAlive
-        if not Visible then
-            coroutine.wrap(function()
-                local Character = ESP.Target.Character
-                local rootPart = ESP.Target.RootPart
-                local flag2 = ESP.Mode
-                local flag3 = ESP.Flag
-                local flag4 = ESP.Flags
-                local distance1 = ESP.Target.Distance
-                local health1 = ESP.Target.Health
-                local health2 = ESP.Target.MaxHealth
-                local isalive1 = ESP.Target.IsAlive
-                local target1 = Target
-                local mode1 = ESP.Mode
-                local LastRefresh1 = 0
-                local RefreshRate1 = 10
-                
-            coroutine.wrap(function()
-               RemoveESPSelf(ESP.Target.Character)
-            end)()
-            
-               coroutine.wrap(function()
-                repeat 
-                game.RunService.Heartbeat:Wait()
-                if (tick() - LastRefresh1) > (RefreshRate1 / 1000) then
-                    LastRefresh1 = tick()
-              --  pcall(function()
-                SP,onScreen1 = WorldToScreen(rootPart.Position)
-                inrange1 = CheckDistance(GetFlag(flag4,flag3," DistanceCheck"),GetFlag(flag4,flag3," Distance"),distance1)
-                health1,health2,isalive1 = GetHealth(target1,Character,mode1)
-                Visible = onScreen1 and inrange1 and rootPart and isalive1
-                --end)
-                end
-              --task.wait(0.05)
-                until Character == nil or not Character:IsDescendantOf(workspace) or Visible
-                if Character ~= nil and Character:IsDescendantOf(workspace) or Visible then
-                coroutine.wrap(function()
-                    print('test',Character.Name,Visible)
-                 AddESPSelf(Character,flag2,flag3,flag4)
-                 end)()
-                end
-                
-               end)()
-            
-                
-            end)()  
-        returnESP = true   
-        return
-        end
-        end
-       end)
-       
-       end
-    end)() 
-  
         
         --[[
         if ESP.Mode ~= "Player" then
            -- print(ESP.Target.Character)
         end
         ]]
-    
-    
+            
         if ESP.Target.Character and ESP.Target.RootPart and ESP.Mode == "Player" or ESP.Mode == "NPC" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("FakeHead1") or ESP.Mode == "Mob" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("Head") then
            
             ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
