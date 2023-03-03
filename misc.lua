@@ -130,7 +130,7 @@ function TPReturner2()
     for i,v in pairs(Site.data) do
         local Possible = true
         ID = tostring(v.id)
-        if tonumber(v.maxPlayers) > tonumber(v.playing) or tonumber(v.maxPlayers) < 14 then
+        if tonumber(v.maxPlayers) > tonumber(v.playing) or tonumber(v.playing) < 14 then
             for _,Existing in pairs(AllIDs) do
                 if num ~= 0 then
                     if ID == tostring(Existing) then
