@@ -100,13 +100,12 @@ local function Teleport()
             if foundAnything ~= "" then
                 TPReturner()
             end
-            task.wait(1)
+        
         end)
     end
 end
 
 
-local pingNum = 50
 local PlaceID = game.PlaceId
 local AllIDs = {}
 local foundAnything = ""
@@ -140,7 +139,7 @@ function TPReturner2()
         if tonumber(v.maxPlayers) > tonumber(v.playing) then
             for _,Existing in pairs(AllIDs) do
                 if num ~= 0 then
-                    if ID == tostring(Existing) then--or tonumber(v.ping) > pingNum then
+                    if ID == tostring(Existing) then
                         Possible = false
                     end
                 else
@@ -154,29 +153,28 @@ function TPReturner2()
                 end
                 num = num + 1
             end
-            if Possible == true then--and tonumber(v.ping) <= pingNum then
-                --print(tonumber(v.ping))
+            if Possible == true then
                 table.insert(AllIDs, ID)
-                wait()
+                task.wait()
                 pcall(function()
                     writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
-                    wait()
+                    task.wait()
                     game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
                 end)
-                wait()
+                task.wait()
             end
         end
     end
 end
 
-function Teleport2()
-    while wait() do
+local function Teleport2()
+    while task.wait() do
         pcall(function()
             TPReturner2()
             if foundAnything ~= "" then
                 TPReturner2()
             end
-            task.wait(1)
+        
         end)
     end
 end
