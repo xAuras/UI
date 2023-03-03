@@ -458,6 +458,7 @@ LastRefresh = tick()
         
     local Character = ESP.Target.Character
     local returnESP = false
+    
        pcall(function()
          if ESP.Mode ~= "Player" then
         ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
@@ -477,8 +478,10 @@ LastRefresh = tick()
                 local isalive1 = ESP.Target.IsAlive
                 local target1 = Target
                 local mode1 = ESP.Mode
-                
+            coroutine.wrap(function()
                RemoveESPSelf(ESP.Target.Character)
+              end)()
+               coroutine.wrap(function()
                 repeat 
                 task.wait() 
                 pcall(function()
@@ -489,7 +492,7 @@ LastRefresh = tick()
                 end)
                 task.wait(0.05)
                 until Character == nil or not Character:IsDescendantOf(workspace) or Visible
-                
+                end)()
                 if Visible and Character ~= nil and Character:IsDescendantOf(workspace) then
                  AddESPSelf(Character,flag2,flag3,flag4)
                 end
