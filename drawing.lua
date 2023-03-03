@@ -3,7 +3,7 @@ local RunService = game:GetService("RunService")
 local PlayerService = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 
-local DrawingLibrary = {ESP = {},ObjectESP = {},NPC = {},Mob = {}}
+local DrawingLibrary = {ESP = {},ObjectESP = {},Mob = {},NPC = {}}
 repeat task.wait() until PlayerService.LocalPlayer
 local LocalPlayer = PlayerService.LocalPlayer
 local Camera = Workspace.CurrentCamera
@@ -323,8 +323,8 @@ local function RemoveESPSelf(Target)
     for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
  --   ESP.Highlight:Destroy()
 
-    Clear(DrawingLibrary.ESP[Target])
-    DrawingLibrary.ESP[Target] = nil
+    Clear(DrawingLibrary.Mob[Target])
+    DrawingLibrary.Mob[Target] = nil
 end
 
 function DrawingLibrary:RemoveESP(Target)
@@ -341,8 +341,8 @@ function DrawingLibrary:RemoveMob(Target)
     for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
  --   ESP.Highlight:Destroy()
 
-    Clear(DrawingLibrary.ESP[Target])
-    DrawingLibrary.ESP[Target] = nil
+    Clear(DrawingLibrary.Mob[Target])
+    DrawingLibrary.Mob[Target] = nil
 end
 
 function DrawingLibrary:RemoveNPC(Target)
@@ -350,8 +350,8 @@ function DrawingLibrary:RemoveNPC(Target)
     for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
  --   ESP.Highlight:Destroy()
 
-    Clear(DrawingLibrary.ESP[Target])
-    DrawingLibrary.ESP[Target] = nil
+    Clear(DrawingLibrary.NPC[Target])
+    DrawingLibrary.NPC[Target] = nil
 end
 
 
