@@ -4,6 +4,8 @@ local PlayerService = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 
 local DrawingLibrary = {ESP = {},ObjectESP = {}}
+
+local TempTable = {}
 repeat task.wait() until PlayerService.LocalPlayer
 local LocalPlayer = PlayerService.LocalPlayer
 local Camera = Workspace.CurrentCamera
@@ -235,29 +237,57 @@ function DrawingLibrary:AddObject(Object,ObjectName,ObjectPosition,GlobalFlag,Fl
         Name = DrawingNew("Text",{Visible = false,ZIndex = 1,Center = true,Outline = true})
     }
 end
+
 function DrawingLibrary:AddESP(Target,Mode,Flag,Flags)
     if DrawingLibrary.ESP[Target] then return end
 
     DrawingLibrary.ESP[Target] = {
         Target = {},Mode = Mode,
         Flag = Flag,Flags = Flags,
-        --Highlight = HighlightNew(),
+        Highlight = HighlightNew(),
         Drawing = {
-       --     BoxOutline       = DrawingNew("Square",  {Visible = false,ZIndex = 0                                                }),
-       --     Box              = DrawingNew("Square",  {Visible = false,ZIndex = 1                                                }),
-       --     HealthBarOutline = DrawingNew("Square",  {Visible = false,ZIndex = 0,Filled = true                                  }),
-       --     HealthBar        = DrawingNew("Square",  {Visible = false,ZIndex = 1,Filled = true                                  }),
-        --    TracerOutline    = DrawingNew("Line",    {Visible = false,ZIndex = 0                                                }),
-        --    Tracer           = DrawingNew("Line",    {Visible = false,ZIndex = 1                                                }),
-        --    HeadDotOutline   = DrawingNew("Circle",  {Visible = false,ZIndex = 0                                                }),
-         --   HeadDot          = DrawingNew("Circle",  {Visible = false,ZIndex = 1                                                }),
-         --   ArrowOutline     = DrawingNew("Triangle",{Visible = false,ZIndex = 0                                                }),
-         --   Arrow            = DrawingNew("Triangle",{Visible = false,ZIndex = 1                                                }),
+            BoxOutline       = DrawingNew("Square",  {Visible = false,ZIndex = 0                                                }),
+            Box              = DrawingNew("Square",  {Visible = false,ZIndex = 1                                                }),
+            HealthBarOutline = DrawingNew("Square",  {Visible = false,ZIndex = 0,Filled = true                                  }),
+            HealthBar        = DrawingNew("Square",  {Visible = false,ZIndex = 1,Filled = true                                  }),
+            TracerOutline    = DrawingNew("Line",    {Visible = false,ZIndex = 0                                                }),
+            Tracer           = DrawingNew("Line",    {Visible = false,ZIndex = 1                                                }),
+            HeadDotOutline   = DrawingNew("Circle",  {Visible = false,ZIndex = 0                                                }),
+            HeadDot          = DrawingNew("Circle",  {Visible = false,ZIndex = 1                                                }),
+            ArrowOutline     = DrawingNew("Triangle",{Visible = false,ZIndex = 0                                                }),
+            Arrow            = DrawingNew("Triangle",{Visible = false,ZIndex = 1                                                }),
 
             Name             = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
             Distance         = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
-          --  Health           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor}),
-           -- Weapon           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor})
+            Health           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor}),
+            Weapon           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor})
+        }
+    }
+end
+
+local function AddESPSelf(Target,Mode,Flag,Flags)
+    if DrawingLibrary.ESP[Target] then return end
+
+    DrawingLibrary.ESP[Target] = {
+        Target = {},Mode = Mode,
+        Flag = Flag,Flags = Flags,
+        Highlight = HighlightNew(),
+        Drawing = {
+            BoxOutline       = DrawingNew("Square",  {Visible = false,ZIndex = 0                                                }),
+            Box              = DrawingNew("Square",  {Visible = false,ZIndex = 1                                                }),
+            HealthBarOutline = DrawingNew("Square",  {Visible = false,ZIndex = 0,Filled = true                                  }),
+            HealthBar        = DrawingNew("Square",  {Visible = false,ZIndex = 1,Filled = true                                  }),
+            TracerOutline    = DrawingNew("Line",    {Visible = false,ZIndex = 0                                                }),
+            Tracer           = DrawingNew("Line",    {Visible = false,ZIndex = 1                                                }),
+            HeadDotOutline   = DrawingNew("Circle",  {Visible = false,ZIndex = 0                                                }),
+            HeadDot          = DrawingNew("Circle",  {Visible = false,ZIndex = 1                                                }),
+            ArrowOutline     = DrawingNew("Triangle",{Visible = false,ZIndex = 0                                                }),
+            Arrow            = DrawingNew("Triangle",{Visible = false,ZIndex = 1                                                }),
+
+            Name             = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
+            Distance         = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
+            Health           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor}),
+            Weapon           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor})
         }
     }
 end
@@ -266,7 +296,7 @@ end
 local function RemoveESPSelf(Target)
     local ESP = DrawingLibrary.ESP[Target] if not ESP then return end
     for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
-    --ESP.Highlight:Destroy()
+    ESP.Highlight:Destroy()
 
     Clear(DrawingLibrary.ESP[Target])
     DrawingLibrary.ESP[Target] = nil
@@ -275,7 +305,7 @@ end
 function DrawingLibrary:RemoveESP(Target)
     local ESP = DrawingLibrary.ESP[Target] if not ESP then return end
     for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
-   -- ESP.Highlight:Destroy()
+    ESP.Highlight:Destroy()
 
     Clear(DrawingLibrary.ESP[Target])
     DrawingLibrary.ESP[Target] = nil
@@ -424,7 +454,41 @@ LastRefresh = tick()
         
         if ESP.Mode == "NPC" then
         ESP.Target.RootPart = ESP.Target.Character.FakeHead1
-        end    
+        end
+        
+       pcall(function()
+         if ESP.Mode ~= "Player" then
+        ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
+        ESP.Target.InTheRange = CheckDistance(GetFlag(ESP.Flags,ESP.Flag," DistanceCheck"),GetFlag(ESP.Flags,ESP.Flag," Distance"),ESP.Target.Distance)
+        ESP.Target.Health,ESP.Target.MaxHealth,ESP.Target.IsAlive = GetHealth(Target,ESP.Target.Character,ESP.Mode)
+        local Visible = ESP.Target.OnScreen and ESP.Target.InTheRange and ESP.Target.RootPart and ESP.Target.IsAlive
+        if not Visible then
+            coroutine.wrap(function()
+                local Character = ESP.Target.Character
+                local flag2 = ESP.Mode
+                local flag3 = ESP.Flag
+                local flag4 = ESP.Flags
+
+               RemoveESPSelf(ESP.Target.Character)
+                repeat 
+                task.wait() 
+                pcall(function()
+                Visible = ESP.Target.OnScreen and ESP.Target.InTheRange and ESP.Target.RootPart and ESP.Target.IsAlive
+                end)
+                task.wait(0.1)
+                until Character == nil or not Character:IsDescendantOf(workspace) or Visible
+                
+                if Visible and Character ~= nil and Character:IsDescendantOf(workspace) then
+                 AddESPSelf(Character,flag2,flag3,flag4)
+               
+                  return
+                end
+                
+            end)()    
+        end
+        end
+       end)
+
         
         --[[
         if ESP.Mode ~= "Player" then
