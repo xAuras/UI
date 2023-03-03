@@ -506,7 +506,7 @@ LastRefresh = tick()
                 end)
                 end
                 until Character == nil or not Character:IsDescendantOf(workspace) or Visible
-                if Character ~= nil and Character:IsDescendantOf(workspace) then
+                if Character ~= nil then
                  AddESPSelf(Character,flag2,flag3,flag4)
                 end
                 
@@ -526,7 +526,7 @@ LastRefresh = tick()
       returnESP = false
   end
   
-  if returnESP or mode1 ~= "Player" and Character == nil then
+  if returnESP then
       return
   end      
         
