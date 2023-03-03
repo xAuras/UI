@@ -58,8 +58,11 @@ function TPReturner()
     local num = 0;
     for i,v in pairs(Site.data) do
         local Possible = true
+        if tonumber(v.maxPlayers) > tonumber(v.playing) or tonumber(v.playing) < 4 then
+            Possible = false
+        end
         ID = tostring(v.id)
-        if tonumber(v.maxPlayers) > tonumber(v.playing) or tonumber(v.playing) > 4 then
+        if tonumber(v.maxPlayers) > tonumber(v.playing) then
             for _,Existing in pairs(AllIDs) do
                 if num ~= 0 then
                     if ID == tostring(Existing) then
@@ -130,8 +133,11 @@ function TPReturner2()
     local num = 0;
     for i,v in pairs(Site.data) do
         local Possible = true
+        if tonumber(v.maxPlayers) > tonumber(v.playing) or tonumber(v.playing) < 11 then
+            Possible = false
+        end
         ID = tostring(v.id)
-        if tonumber(v.playing) >= tonumber(14) and tonumber(v.playing) < tonumber(maxPlayers) then--and tonumber(v.ping) <= pingNum then
+        if tonumber(v.maxPlayers) > tonumber(v.playing) then
             for _,Existing in pairs(AllIDs) do
                 if num ~= 0 then
                     if ID == tostring(Existing) then--or tonumber(v.ping) > pingNum then
