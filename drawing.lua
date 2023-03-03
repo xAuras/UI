@@ -241,23 +241,23 @@ function DrawingLibrary:AddESP(Target,Mode,Flag,Flags)
     DrawingLibrary.ESP[Target] = {
         Target = {},Mode = Mode,
         Flag = Flag,Flags = Flags,
-        Highlight = HighlightNew(),
+        --Highlight = HighlightNew(),
         Drawing = {
-            BoxOutline       = DrawingNew("Square",  {Visible = false,ZIndex = 0                                                }),
-            Box              = DrawingNew("Square",  {Visible = false,ZIndex = 1                                                }),
-            HealthBarOutline = DrawingNew("Square",  {Visible = false,ZIndex = 0,Filled = true                                  }),
-            HealthBar        = DrawingNew("Square",  {Visible = false,ZIndex = 1,Filled = true                                  }),
-            TracerOutline    = DrawingNew("Line",    {Visible = false,ZIndex = 0                                                }),
-            Tracer           = DrawingNew("Line",    {Visible = false,ZIndex = 1                                                }),
-            HeadDotOutline   = DrawingNew("Circle",  {Visible = false,ZIndex = 0                                                }),
-            HeadDot          = DrawingNew("Circle",  {Visible = false,ZIndex = 1                                                }),
-            ArrowOutline     = DrawingNew("Triangle",{Visible = false,ZIndex = 0                                                }),
-            Arrow            = DrawingNew("Triangle",{Visible = false,ZIndex = 1                                                }),
+       --     BoxOutline       = DrawingNew("Square",  {Visible = false,ZIndex = 0                                                }),
+       --     Box              = DrawingNew("Square",  {Visible = false,ZIndex = 1                                                }),
+       --     HealthBarOutline = DrawingNew("Square",  {Visible = false,ZIndex = 0,Filled = true                                  }),
+       --     HealthBar        = DrawingNew("Square",  {Visible = false,ZIndex = 1,Filled = true                                  }),
+        --    TracerOutline    = DrawingNew("Line",    {Visible = false,ZIndex = 0                                                }),
+        --    Tracer           = DrawingNew("Line",    {Visible = false,ZIndex = 1                                                }),
+        --    HeadDotOutline   = DrawingNew("Circle",  {Visible = false,ZIndex = 0                                                }),
+         --   HeadDot          = DrawingNew("Circle",  {Visible = false,ZIndex = 1                                                }),
+         --   ArrowOutline     = DrawingNew("Triangle",{Visible = false,ZIndex = 0                                                }),
+         --   Arrow            = DrawingNew("Triangle",{Visible = false,ZIndex = 1                                                }),
 
             Name             = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
             Distance         = DrawingNew("Text",    {Visible = false,ZIndex = 1,Center = true,Outline = true,Color = WhiteColor}),
-            Health           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor}),
-            Weapon           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor})
+          --  Health           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor}),
+           -- Weapon           = DrawingNew("Text",    {Visible = false,ZIndex = 0,Center = true,Outline = true,Color = WhiteColor})
         }
     }
 end
@@ -266,7 +266,7 @@ end
 local function RemoveESPSelf(Target)
     local ESP = DrawingLibrary.ESP[Target] if not ESP then return end
     for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
-    ESP.Highlight:Destroy()
+    --ESP.Highlight:Destroy()
 
     Clear(DrawingLibrary.ESP[Target])
     DrawingLibrary.ESP[Target] = nil
@@ -275,7 +275,7 @@ end
 function DrawingLibrary:RemoveESP(Target)
     local ESP = DrawingLibrary.ESP[Target] if not ESP then return end
     for Index,Value in pairs(ESP.Drawing) do Value:Remove() end
-    ESP.Highlight:Destroy()
+   -- ESP.Highlight:Destroy()
 
     Clear(DrawingLibrary.ESP[Target])
     DrawingLibrary.ESP[Target] = nil
