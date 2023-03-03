@@ -465,15 +465,25 @@ LastRefresh = tick()
         if not Visible then
             coroutine.wrap(function()
                 local Character = ESP.Target.Character
+                local rootPart = ESP.Target.RootPart
                 local flag2 = ESP.Mode
                 local flag3 = ESP.Flag
                 local flag4 = ESP.Flags
-
+                local distance1 = ESP.Target.Distance
+                local health1 = ESP.Target.Health
+                local health2 = ESP.Target.MaxHealth
+                local isalive1 = ESP.Target.IsAlive
+                local target1 = Target
+                local mode1 = ESP.Mode
+                
                RemoveESPSelf(ESP.Target.Character)
                 repeat 
                 task.wait() 
                 pcall(function()
-                Visible = ESP.Target.OnScreen and ESP.Target.InTheRange and ESP.Target.RootPart and ESP.Target.IsAlive
+                SP,onScreen1 = WorldToScreen(rootPart.Position)
+                inrange1 = CheckDistance(GetFlag(flag4,flag3," DistanceCheck"),GetFlag(flag4,flag3," Distance"),distance1)
+                health1,health2,isalive1 = GetHealth(target1,ESP.target1.Character,mode1)
+                Visible = onScreen1 and inrange1 and rootPart and isalive1
                 end)
                 task.wait(0.1)
                 until Character == nil or not Character:IsDescendantOf(workspace) or Visible
@@ -496,7 +506,7 @@ LastRefresh = tick()
            -- print(ESP.Target.Character)
         end
         ]]
-        if ESP.Target.Character ~= nil and ESP.Target.Character and ESP.Target.RootPart and ESP.Mode == "Player" or ESP.Mode == "NPC" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("FakeHead1") or ESP.Mode == "Mob" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("Head") then
+        if ESP.Target.Character ~= nil and ESP.Target.Character:IsDescendantOf(workspace) and ESP.Target.Character and ESP.Target.RootPart and ESP.Mode == "Player" or ESP.Mode == "NPC" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("FakeHead1") or ESP.Mode == "Mob" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("Head") then
            
             ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
             ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
