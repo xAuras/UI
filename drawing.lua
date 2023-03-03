@@ -456,6 +456,8 @@ LastRefresh = tick()
         ESP.Target.RootPart = ESP.Target.Character.FakeHead1
         end
         
+    local Character = ESP.Target.Character
+    local returnESP = false
        pcall(function()
          if ESP.Mode ~= "Player" then
         ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
@@ -485,20 +487,22 @@ LastRefresh = tick()
                 health1,health2,isalive1 = GetHealth(target1,ESP.target1.Character,mode1)
                 Visible = onScreen1 and inrange1 and rootPart and isalive1
                 end)
-                task.wait(0.1)
+                task.wait(0.05)
                 until Character == nil or not Character:IsDescendantOf(workspace) or Visible
                 
                 if Visible and Character ~= nil and Character:IsDescendantOf(workspace) then
                  AddESPSelf(Character,flag2,flag3,flag4)
-               
-                  return
                 end
                 
             end)()  
-            return
+        returnESP = true    
         end
         end
        end)
+       
+       if returnESP or ESP.Target.Character == nil then
+           return 
+       end       
 
         
         --[[
@@ -506,7 +510,9 @@ LastRefresh = tick()
            -- print(ESP.Target.Character)
         end
         ]]
-        if ESP.Target.Character ~= nil and ESP.Target.Character:IsDescendantOf(workspace) and ESP.Target.Character and ESP.Target.RootPart and ESP.Mode == "Player" or ESP.Mode == "NPC" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("FakeHead1") or ESP.Mode == "Mob" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("Head") then
+    
+    
+        if ESP.Target.Character and ESP.Target.RootPart and ESP.Mode == "Player" or ESP.Mode == "NPC" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("FakeHead1") or ESP.Mode == "Mob" and ESP.Target.Character and ESP.Target.Character:FindFirstChild("Head") then
            
             ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
             ESP.Target.Distance = GetDistance(ESP.Target.RootPart.Position)
