@@ -513,7 +513,7 @@ LastRefresh = tick()
                 Visible = onScreen1 and inrange1 and rootPart and isalive1
                 --end)
                 end
-              task.wait(0.05)
+              --task.wait(0.05)
                 until Character == nil or not Character:IsDescendantOf(workspace) or Visible
                 if Character ~= nil and Character:IsDescendantOf(workspace) or Visible then
                 coroutine.wrap(function()
