@@ -455,7 +455,8 @@ LastRefresh = tick()
         if ESP.Mode == "NPC" then
         ESP.Target.RootPart = ESP.Target.Character.FakeHead1
         end
-        
+    
+    coroutine.wrap(function()
        pcall(function()
          if ESP.Mode ~= "Player" then
         ESP.Target.ScreenPosition,ESP.Target.OnScreen = WorldToScreen(ESP.Target.RootPart.Position)
@@ -469,7 +470,13 @@ LastRefresh = tick()
                 local flag3 = ESP.Flag
                 local flag4 = ESP.Flags
 
-               RemoveESPSelf(ESP.Target.Character)
+                coroutine.wrap(function()
+               --RemoveESPSelf(ESP.Target.Character)
+               TestTable[ESP] = DrawingLibrary.ESP[ESP]
+               DrawingLibrary.ESP[ESP] = nil
+                end)()
+                
+            coroutine.wrap(function()
                 repeat 
                 task.wait() 
                 pcall(function()
@@ -477,17 +484,20 @@ LastRefresh = tick()
                 end)
                 task.wait(0.1)
                 until Character == nil or not Character:IsDescendantOf(workspace) or Visible
-                
                 if Character ~= nil and Character:IsDescendantOf(workspace) or Visible then
-                 AddESPSelf(Character,flag2,flag3,flag4)
-             
+                    print('test',Character.Name)
+                    DrawingLibrary.ESP[ESP] = TestTable[ESP]
+                    TestTable[ESP] = nil
+                 --AddESPSelf(Character,flag2,flag3,flag4)
                 end
+                end)()
                 
             end)()    
             return
         end
         end
        end)
+       end)()
 
         
         --[[
