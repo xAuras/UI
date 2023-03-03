@@ -474,7 +474,7 @@ local LastRefresh = 0
 
 RunService.Heartbeat:Connect(function()
 if (tick() - LastRefresh) > (RefreshRate / 1000) then    
---pcall(function()
+pcall(function()
 LastRefresh = tick() 
     for Target,ESP in next, (DrawingLibrary.ESP) do
         ESP.Target.Character,ESP.Target.RootPart = GetCharacter(Target,ESP.Mode)
@@ -1000,7 +1000,7 @@ ESP.Drawing.Distance.Visible = ESP.Drawing.Name.Visible
         
     end
 
-  --end)
+  end)
     end
 end)
 
