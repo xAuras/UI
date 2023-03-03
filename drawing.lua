@@ -462,6 +462,10 @@ LastRefresh = tick()
         return 
     end
     
+    if ESP.Mode == nil then
+        return
+    end
+    
     local returnESP = false
     local mode1 = ESP.Mode
     
@@ -505,8 +509,9 @@ LastRefresh = tick()
                 Visible = onScreen1 and inrange1 and rootPart and isalive1
                 end)
               --  end
+              task.wait(0.05)
                 until Character == nil or not Character:IsDescendantOf(workspace) or Visible
-                if Character ~= nil or Visible then
+                if Character ~= nil and Character:IsDescendantOf(workspace) or Visible then
                  AddESPSelf(Character,flag2,flag3,flag4)
                 end
                 
