@@ -457,8 +457,13 @@ LastRefresh = tick()
         end
         
     local Character = ESP.Target.Character
+    
+    if Character == nil then
+        return 
+    end
+    
     local returnESP = false
-    local mode1 = ESP.Mode
+    
     
     coroutine.wrap(function()
     if ESP.Mode ~= "Player" then
@@ -500,9 +505,10 @@ LastRefresh = tick()
                 end)
                 end
                 until Character == nil or not Character:IsDescendantOf(workspace) or Visible
-                if Visible and Character ~= nil and Character:IsDescendantOf(workspace) then
+                if Character ~= nil and Character:IsDescendantOf(workspace) then
                  AddESPSelf(Character,flag2,flag3,flag4)
                 end
+                
                end)()
             
                 
@@ -512,11 +518,16 @@ LastRefresh = tick()
         end
        end)
        
-       if returnESP and mode1 ~= "Player" or mode1 ~= "Player" and ESP.Target.Character == nil then
-           return 
        end
-       end
-      end)() 
+    end)() 
+  
+  if ESP.Mode == "Player" then
+      returnESP = false
+  end
+  
+  if returnESP or ESP.Mode ~= "Player" and ESP.Target.Character == nil then
+      return
+  end      
         
         --[[
         if ESP.Mode ~= "Player" then
