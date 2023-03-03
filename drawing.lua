@@ -291,7 +291,7 @@ function DrawingLibrary:AddMob(Target,Mode,Flag,Flags)
 end
 
 function DrawingLibrary:AddNPC(Target,Mode,Flag,Flags)
-    if DrawingLibrary.Mob[Target] then return end
+    if DrawingLibrary.NPC[Target] then return end
 
     DrawingLibrary.NPC[Target] = {
         Target = {},Mode = Mode,
