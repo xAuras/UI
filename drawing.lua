@@ -458,7 +458,7 @@ LastRefresh = tick()
         
     local Character = ESP.Target.Character
     
-    if Character == nil then
+    if ESP.Mode ~= "Player" and Character == nil then
         return 
     end
     
@@ -487,7 +487,7 @@ LastRefresh = tick()
                 local target1 = Target
                 local mode1 = ESP.Mode
                 local LastRefresh1 = 0
-                local RefreshRate1 = 25
+                local RefreshRate1 = 10
                 
             coroutine.wrap(function()
                RemoveESPSelf(ESP.Target.Character)
@@ -495,18 +495,18 @@ LastRefresh = tick()
             
                coroutine.wrap(function()
                 repeat 
-                game.RunService.Heartbeat:Wait()
-                if (tick() - LastRefresh1) > (RefreshRate1 / 1000) then
-                    LastRefresh1 = tick()
+                task.wait()
+                --if (tick() - LastRefresh1) > (RefreshRate1 / 1000) then
+                 --   LastRefresh1 = tick()
                 pcall(function()
                 SP,onScreen1 = WorldToScreen(rootPart.Position)
                 inrange1 = CheckDistance(GetFlag(flag4,flag3," DistanceCheck"),GetFlag(flag4,flag3," Distance"),distance1)
                 health1,health2,isalive1 = GetHealth(target1,ESP.target1.Character,mode1)
                 Visible = onScreen1 and inrange1 and rootPart and isalive1
                 end)
-                end
+              --  end
                 until Character == nil or not Character:IsDescendantOf(workspace) or Visible
-                if Character ~= nil then
+                if Character ~= nil or Visible then
                  AddESPSelf(Character,flag2,flag3,flag4)
                 end
                 
