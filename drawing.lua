@@ -494,8 +494,7 @@ LastRefresh = tick()
                 local RefreshRate1 = 10
                 
             coroutine.wrap(function()
-               --RemoveESPSelf(ESP.Target.Character)
-                TestTable[ESP] = DrawingLibrary.ESP[ESP]
+               RemoveESPSelf(ESP.Target.Character)
             end)()
             
                coroutine.wrap(function()
@@ -503,27 +502,26 @@ LastRefresh = tick()
                 task.wait()
                 --if (tick() - LastRefresh1) > (RefreshRate1 / 1000) then
                  --   LastRefresh1 = tick()
-                pcall(function()
+              --  pcall(function()
                 SP,onScreen1 = WorldToScreen(rootPart.Position)
                 inrange1 = CheckDistance(GetFlag(flag4,flag3," DistanceCheck"),GetFlag(flag4,flag3," Distance"),distance1)
-                health1,health2,isalive1 = GetHealth(target1,ESP.target1.Character,mode1)
+                health1,health2,isalive1 = GetHealth(target1,Character,mode1)
                 Visible = onScreen1 and inrange1 and rootPart and isalive1
-                end)
+                --end)
               --  end
               task.wait(0.05)
                 until Character == nil or not Character:IsDescendantOf(workspace) or Visible
                 if Character ~= nil and Character:IsDescendantOf(workspace) or Visible then
-                 --AddESPSelf(Character,flag2,flag3,flag4)
                     print('test',Character.Name,Visible)
-                    DrawingLibrary.ESP[ESP] = TestTable[ESP]
-                    TestTable[ESP] = nil
+                 AddESPSelf(Character,flag2,flag3,flag4)
                 end
                 
                end)()
             
                 
             end)()  
-        returnESP = true    
+        returnESP = true   
+        return
         end
         end
        end)
@@ -531,13 +529,6 @@ LastRefresh = tick()
        end
     end)() 
   
-  if mode1 == "Player" then
-      returnESP = false
-  end
-  
-  if returnESP then
-      return
-  end      
         
         --[[
         if ESP.Mode ~= "Player" then
