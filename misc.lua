@@ -395,7 +395,7 @@ function Misc:SettingsSection(Window,UIKeybind,CustomMouse)
         TeleportSection:Button({Name = "Rejoin",Side = "Right",
         Callback = Parvus.Utilities.Misc.ReJoin})
 
-        TeleportSection:Button({Name = "Server Hop (15+ Players)",Side = "Right",
+        TeleportSection:Button({Name = "Server Hop (13+ Players)",Side = "Right",
         Callback = Parvus.Utilities.Misc.ServerHop})
     
         TeleportSection:Button({Name = "Server Hop (Low Servers)",Side = "Right",
